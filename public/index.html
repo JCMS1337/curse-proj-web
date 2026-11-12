@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>СпортБронь.НСК — Бронирование спортивных площадок для школ</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Axios -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col antialiased">
+
+  <!-- Навигационная панель -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <!-- Логотип -->
+      <a href="/index.html" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-md group-hover:bg-blue-700 transition">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-bold text-lg text-slate-900 leading-tight">СпортБронь<span class="text-blue-600">.НСК</span></span>
+          <span class="text-xs text-slate-600 font-medium">Муниципальный портал</span>
+        </div>
+      </a>
+
+      <!-- Основные ссылки -->
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
+        <a href="/index.html" class="text-blue-600 font-semibold">Главная</a>
+        <a href="/venues.html" class="hover:text-blue-600 transition">Каталог площадок и карта</a>
+        <a id="nav-cabinet-link" href="/cabinet.html" class="hidden hover:text-blue-600 transition">Мои бронирования</a>
+        <a id="nav-admin-link" href="/admin.html" class="hidden hover:text-blue-600 transition">Управление</a>
+      </nav>
+
+      <!-- Авторизация -->
+      <div id="nav-auth-container">
+        <!-- Заполняется динамически из js/api.js -->
+      </div>
+    </div>
+  </header>
+
+  <!-- Главный блок (Hero) -->
+  <main class="flex-grow">
+    <section class="relative overflow-hidden bg-gradient-to-b from-blue-50/50 via-white to-slate-50 py-16 sm:py-24 border-b border-slate-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold mb-6">
+            <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
+            Единая информационная система г. Новосибирска
+          </div>
+          <h1 class="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
+            Бронирование муниципальных спортивных площадок
+          </h1>
+          <p class="mt-6 text-lg text-slate-600 leading-relaxed">
+            Специализированный сервис для учителей физической культуры, тренеров школьных секций и администрации образовательных учреждений. Интерактивная карта, прозрачный график занятости и моментальное подтверждение слотов.
+          </p>
+
+          <!-- Поисковая панель -->
+          <div class="mt-10 max-w-2xl mx-auto bg-white p-2.5 rounded-2xl shadow-lg border border-slate-200 flex flex-col sm:flex-row items-center gap-2">
+            <div class="flex items-center gap-3 w-full px-3 py-2 text-slate-400">
+              <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <input type="text" id="hero-search-input" placeholder="Поиск по названию площадки, улице или району..." class="w-full bg-transparent text-slate-800 placeholder-slate-400 text-sm focus:outline-none">
+            </div>
+            <button id="hero-search-btn" class="w-full sm:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl shadow transition whitespace-nowrap">
+              Найти площадку
+            </button>
+          </div>
+
+          <!-- Быстрые теги -->
+          <div class="mt-6 flex flex-wrap items-center justify-center gap-2 text-xs text-slate-500">
+            <span class="font-medium text-slate-600">Популярное:</span>
+            <a href="/venues.html?sport_type_id=1" class="px-2.5 py-1 bg-white hover:bg-blue-50 hover:text-blue-600 border border-slate-200 rounded-lg transition">Футбол</a>
+            <a href="/venues.html?sport_type_id=2" class="px-2.5 py-1 bg-white hover:bg-blue-50 hover:text-blue-600 border border-slate-200 rounded-lg transition">Баскетбол</a>
+            <a href="/venues.html?sport_type_id=3" class="px-2.5 py-1 bg-white hover:bg-blue-50 hover:text-blue-600 border border-slate-200 rounded-lg transition">Волейбол</a>
+            <a href="/venues.html?sport_type_id=5" class="px-2.5 py-1 bg-white hover:bg-blue-50 hover:text-blue-600 border border-slate-200 rounded-lg transition">Воркаут</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Преимущества и цифры -->
+    <section class="py-16 bg-white border-b border-slate-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="flex items-start gap-4 p-6 rounded-2xl bg-slate-50 border border-slate-100">
+            <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-bold text-slate-900 text-base">Защита от накладок</h3>
+              <p class="mt-1 text-sm text-slate-600 leading-relaxed">
+                Двойное бронирование исключено на уровне СУБД PostgreSQL. Никаких пересечений занятий разных классов и секций.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4 p-6 rounded-2xl bg-slate-50 border border-slate-100">
+            <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center flex-shrink-0">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-bold text-slate-900 text-base">Интерактивная карта</h3>
+              <p class="mt-1 text-sm text-slate-600 leading-relaxed">
+                Быстрый выбор ближайшей площадки на карте OpenStreetMap с фильтрами по покрытию, освещению и инвентарю.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4 p-6 rounded-2xl bg-slate-50 border border-slate-100">
+            <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center flex-shrink-0">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-bold text-slate-900 text-base">Онлайн-календарь</h3>
+              <p class="mt-1 text-sm text-slate-600 leading-relaxed">
+                Наглядная почасовая сетка доступности в реальном времени. Информация о плановых ремонтах и техобслуживании.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Популярные площадки (динамическая загрузка) -->
+    <section class="py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-end justify-between mb-8">
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900">Спортивные объекты Новосибирска</h2>
+            <p class="mt-1 text-sm text-slate-500">Доступны для проведения уроков и соревнований образовательных учреждений</p>
+          </div>
+          <a href="/venues.html" class="text-sm font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1">
+            Все площадки на карте
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
+
+        <div id="featured-venues-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Карточки наполняются через JS -->
+          <div class="col-span-3 text-center py-12 text-slate-400">
+            Загрузка списка площадок...
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Подвал сайта -->
+  <footer class="bg-white border-t border-slate-200 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+      <div class="flex items-center gap-2">
+        <span class="font-semibold text-slate-700">СпортБронь.НСК</span>
+        <span>— Курсовой проект: Кроссплатформенное приложение для бронирования муниципальных спортивных площадок</span>
+      </div>
+      <div>
+        <span>г. Новосибирск, 2026</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Скрипт главной страницы -->
+  <script src="/js/api.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Поиск из Hero блока
+      const searchInput = document.getElementById('hero-search-input');
+      const searchBtn = document.getElementById('hero-search-btn');
+
+      function handleSearch() {
+        const query = searchInput.value.trim();
+        window.location.href = `/venues.html?search=${encodeURIComponent(query)}`;
+      }
+
+      searchBtn?.addEventListener('click', handleSearch);
+      searchInput?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') handleSearch();
+      });
+
+      // Загрузка первых 3 площадок
+      try {
+        const res = await api.get('/venues');
+        const grid = document.getElementById('featured-venues-grid');
+        if (res.data && res.data.length > 0) {
+          const featured = res.data.slice(0, 3);
+          grid.innerHTML = featured.map(v => `
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition flex flex-col">
+              <div class="relative h-48 bg-slate-100 overflow-hidden">
+                <img src="${v.main_photo_url || 'https://images.unsplash.com/photo-1575361204480-aadea25e6e68?auto=format&fit=crop&w=800&q=80'}" 
+                     alt="${escapeHtml(v.name)}" 
+                     class="w-full h-full object-cover">
+                <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-xs font-semibold bg-white/90 backdrop-blur text-slate-800 shadow-sm">
+                  ${escapeHtml(v.sport_type_name)}
+                </span>
+                ${v.has_lighting ? `
+                  <span class="absolute top-3 right-3 p-1.5 rounded-full bg-amber-500/90 text-white shadow-sm" title="Имеется освещение">
+                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM5 10a1 1 0 01-1 1H3a1 1 0 110-2h1a1 1 0 011 1zM8 16v-1h4v1a2 2 0 11-4 0zM12 14H8a4 4 0 01-.82-7.915 4.962 4.962 0 017.64 0A4 4 0 0112 14z" />
+                    </svg>
+                  </span>` : ''}
+              </div>
+              <div class="p-5 flex-grow flex flex-col justify-between">
+                <div>
+                  <h3 class="font-bold text-slate-900 text-lg leading-snug">${escapeHtml(v.name)}</h3>
+                  <p class="mt-2 text-xs text-slate-500 flex items-center gap-1">
+                    <svg class="w-4 h-4 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    ${escapeHtml(v.address)}
+                  </p>
+                  <p class="mt-3 text-xs text-slate-600 line-clamp-2">${escapeHtml(v.description || '')}</p>
+                </div>
+                <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
+                  <span class="text-xs text-slate-400 font-medium">Покрытие: ${escapeHtml(v.surface_type || 'Стандарт')}</span>
+                  <a href="/venue.html?id=${v.id}" class="px-3.5 py-1.5 bg-blue-50 hover:bg-blue-600 text-blue-600 hover:text-white rounded-lg text-xs font-semibold transition">
+                    Подробнее и бронь
+                  </a>
+                </div>
+              </div>
+            </div>
+          `).join('');
+        }
+      } catch (e) {
+        console.error('Ошибка загрузки площадок:', e);
+      }
+    });
+  </script>
+</body>
+</html>
