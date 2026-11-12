@@ -54,13 +54,40 @@ app.use('/api/*', (req, res) => {
 app.use(errorHandler);
 
 // Запуск сервера
+const HOST = process.env.HOST || '0.0.0.0';
+
 if (process.env.NODE_ENV !== 'test') {
-  app.listen(PORT, () => {
-    console.log('==================================================');
-    console.log(` Сервер запущен и принимает запросы на http://localhost:${PORT}`);
-    console.log(` API доступно по префиксу: http://localhost:${PORT}/api`);
-    console.log(` Веб-сайт доступен по адресу: http://localhost:${PORT}`);
-    console.log('==================================================');
+  app.listen(PORT, HOST, () => {
+    const os = require('os');
+    const networkInterfaces = os.networkInterfaces();
+    const networkIps = [];
+
+    for (const ifaceName of Object.keys(networkInterfaces)) {
+      for (const iface of networkInterfaces[ifaceName]) {
+        // Отбираем только внешние IPv4 адреса
+        if (iface.family === 'IPv4' && !iface.internal) {
+          networkIps.push({ iface: ifaceName, address: iface.address });
+        }
+      }
+    }
+
+    console.log('===============================================================');
+    console.log('      СЕРВЕР БРОНИРОВАНИЯ СПОРТИВНЫХ ПЛОЩАДОК ЗАПУЩЕН         ');
+    console.log('===============================================================');
+    console.log(`  Локальный доступ (на этом компьютере):`);
+    console.log(`  -> http://localhost:${PORT}`);
+    console.log('');
+    if (networkIps.length > 0) {
+      console.log(`  Доступ по локальной сети (телефон, планшет, другой ПК):`);
+      networkIps.forEach(net => {
+        console.log(`  -> http://${net.address}:${PORT}  (${net.iface})`);
+      });
+      console.log('');
+    }
+    console.log(`  REST API доступно по префиксу: http://localhost:${PORT}/api`);
+    console.log('===============================================================');
+    console.log('  Для остановки сервера нажмите Ctrl + C');
+    console.log('===============================================================');
   });
 }
 
