@@ -25,35 +25,35 @@ const SPORT_BLOCKS = [
     title: 'Футбол',
     slug: 'football',
     description: 'Футбольные поля стандартных размеров и мини-футбольные площадки с профессиональной искусственной травой, мачтовым освещением и ограждением.',
-    fallbackPhoto: '/img/venues/football_1.svg'
+    fallbackPhoto: '/img/venues/football/1.svg'
   },
   {
     id: 2,
     title: 'Баскетбол',
     slug: 'basketball',
     description: 'Специализированные площадки с безопасными фермами, антивандальными кольцами и амортизирующим полиуретановым покрытием для школьных секций.',
-    fallbackPhoto: '/img/venues/basketball_1.svg'
+    fallbackPhoto: '/img/venues/basketball/1.svg'
   },
   {
     id: 3,
     title: 'Волейбол',
     slug: 'volleyball',
     description: 'Открытые площадки с регулируемыми стойками, сетками и песчаным или резиновым покрытием для регулярных тренировок и школьных спартакиад.',
-    fallbackPhoto: '/img/venues/volleyball_1.svg'
+    fallbackPhoto: '/img/venues/volleyball/1.svg'
   },
   {
     id: 4,
     title: 'Универсальная площадка',
     slug: 'universal',
     description: 'Многофункциональные спортивные комплексы с комбинированной разметкой для футбола, баскетбола и волейбола с круговым защитным ограждением.',
-    fallbackPhoto: '/img/venues/universal_1.svg'
+    fallbackPhoto: '/img/venues/universal/1.svg'
   },
   {
     id: 5,
     title: 'Легкая атлетика',
     slug: 'athletics',
     description: 'Стадионы с круговыми и прямыми беговыми дорожками (тартан/резина), прыжковыми ямами, турниками и гимнастическим оборудованием для сдачи норм ГТО.',
-    fallbackPhoto: '/img/venues/athletics_1.svg'
+    fallbackPhoto: '/img/venues/athletics/1.svg'
   }
 ];
 
@@ -196,9 +196,13 @@ async function loadVenuesForSport(sportTypeId, fallbackPhoto) {
 
       return `
         <div class="bg-white rounded-2xl border border-[#d1fae5] shadow-sm hover:shadow-md hover:border-[#16a34a] transition overflow-hidden flex flex-col justify-between">
-          <div class="relative h-44 bg-[#f0fdf4] overflow-hidden">
+          <div class="relative w-full aspect-[4/3] bg-[#f0fdf4] overflow-hidden">
             <img src="${v.main_photo_url || fallbackPhoto}" 
                  alt="${escapeHtml(v.name)}" 
+                 loading="lazy"
+                 width="400"
+                 height="300"
+                 onerror="this.onerror=null; this.src='${fallbackPhoto}';"
                  class="w-full h-full object-cover">
             <div class="absolute top-3 left-3 flex gap-1.5 flex-wrap">
               <span class="px-2 py-0.5 rounded-lg text-[10px] font-bold bg-[#dcfce7] text-[#166534] shadow-sm">
@@ -208,12 +212,11 @@ async function loadVenuesForSport(sportTypeId, fallbackPhoto) {
                 <span class="px-2 py-0.5 rounded-lg text-[10px] font-medium bg-white/90 text-slate-700 shadow-sm backdrop-blur">
                   ${districtLabel}
                 </span>` : ''}
+              ${v.has_lighting ? `
+                <span class="px-2 py-0.5 rounded-lg text-[10px] font-semibold bg-[#dcfce7] text-[#166534] shadow-sm flex items-center gap-1">
+                  <span>💡</span> Освещение
+                </span>` : ''}
             </div>
-            ${v.has_lighting ? `
-              <span class="absolute bottom-2 right-2 px-2 py-0.5 bg-amber-500 text-white rounded text-[10px] font-medium shadow" title="Освещение">
-                💡 Освещение
-              </span>
-            ` : ''}
           </div>
 
           <div class="p-4 flex-grow flex flex-col justify-between">

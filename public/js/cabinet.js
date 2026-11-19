@@ -132,9 +132,14 @@ function renderBookingsList() {
       <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 transition hover:border-slate-300">
         
         <div class="flex items-start gap-4">
-          <div class="w-20 h-20 rounded-xl bg-[#f0fdf4] border border-[#d1fae5] flex-shrink-0 overflow-hidden relative">
-            <img src="${b.venue_photo_url || '/img/venues/football_1.svg'}" 
-                 alt="${escapeHtml(b.venue_name)}" class="w-full h-full object-cover">
+          <div class="w-24 aspect-[4/3] rounded-xl bg-[#f0fdf4] border border-[#d1fae5] flex-shrink-0 overflow-hidden relative">
+            <img src="${b.venue_photo_url || '/img/venues/football/1.svg'}" 
+                 alt="${escapeHtml(b.venue_name)}" 
+                 loading="lazy"
+                 width="96"
+                 height="72"
+                 onerror="this.onerror=null; this.src='/img/venues/football/1.svg';"
+                 class="w-full h-full object-cover">
           </div>
 
           <div>

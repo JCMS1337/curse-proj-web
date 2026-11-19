@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%">
+  <defs>
+    <radialGradient id="lightGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fef08a" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#fef08a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Фон зоны безопасности -->
+  <rect width="800" height="600" fill="#166534"/>
+  <rect x="60" y="40" width="680" height="520" rx="16" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+
+  <!-- Свободная зона вокруг площадки -->
+  <rect x="90" y="70" width="620" height="460" rx="10" fill="#047857"/>
+
+  <!-- Игровая волейбольная площадка (18x9 метров, соотношение 2:1) -->
+  <rect x="170" y="130" width="460" height="340" fill="#059669"/>
+
+  <!-- Разметка -->
+  <g stroke="#f0fdf4" stroke-width="3" fill="none">
+    <!-- Границы корта -->
+    <rect x="170" y="130" width="460" height="340"/>
+    <!-- Линия под сеткой -->
+    <line x1="400" y1="130" x2="400" y2="470" stroke-width="4"/>
+    <!-- Линии атаки (3 метра от сетки с каждой стороны) -->
+    <line x1="323" y1="130" x2="323" y2="470" stroke-dasharray="8,5"/>
+    <line x1="477" y1="130" x2="477" y2="470" stroke-dasharray="8,5"/>
+  </g>
+
+  <!-- Волейбольная сетка (вид сверху с тросами и антеннами) -->
+  <line x1="400" y1="105" x2="400" y2="495" stroke="#ffffff" stroke-width="5"/>
+  <line x1="400" y1="105" x2="400" y2="495" stroke="#0f172a" stroke-width="2" stroke-dasharray="4,3"/>
+  <!-- Стойки сетки -->
+  <circle cx="400" cy="105" r="5" fill="#e2e8f0" stroke="#334155" stroke-width="2"/>
+  <circle cx="400" cy="495" r="5" fill="#e2e8f0" stroke="#334155" stroke-width="2"/>
+  <!-- Красно-белые антенны на краях сетки -->
+  <line x1="400" y1="130" x2="400" y2="137" stroke="#ef4444" stroke-width="4"/>
+  <line x1="400" y1="463" x2="400" y2="470" stroke="#ef4444" stroke-width="4"/>
+
+  <!-- Судейская вышка -->
+  <rect x="388" y="85" width="24" height="15" rx="3" fill="#334155" stroke="#94a3b8" stroke-width="1.5"/>
+
+  
+    <g fill="#166534" stroke="#d1fae5" stroke-width="1.5">
+      <rect x="260" y="555" width="80" height="14" rx="3"/>
+      <rect x="460" y="555" width="80" height="14" rx="3"/>
+      <rect x="360" y="555" width="80" height="14" rx="3"/>
+    </g>
+  
+  
+    <!-- Осветительные мачты -->
+    <g fill="#cbd5e1" stroke="#475569" stroke-width="2">
+      <circle cx="50" cy="40" r="7"/>
+      <circle cx="750" cy="40" r="7"/>
+      <circle cx="50" cy="560" r="7"/>
+      <circle cx="750" cy="560" r="7"/>
+    </g>
+  
+  
+</svg>

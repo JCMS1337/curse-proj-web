@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%">
+  <defs>
+    <radialGradient id="lightGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fef08a" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#fef08a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Фон площадки -->
+  <rect width="800" height="600" fill="#15803d"/>
+  <rect x="70" y="45" width="660" height="510" rx="14" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+
+  <!-- Основное баскетбольное покрытие -->
+  <rect x="90" y="65" width="620" height="470" rx="10" fill="#16a34a"/>
+
+  <!-- Трехсекундные зоны («краска») с заливкой -->
+  <rect x="130" y="235" width="125" height="130" fill="#15803d" opacity="0.6"/>
+  <rect x="545" y="235" width="125" height="130" fill="#15803d" opacity="0.6"/>
+
+  <!-- Разметка корта -->
+  <g stroke="#fef08a" stroke-width="3" fill="none">
+    <!-- Внешние границы -->
+    <rect x="130" y="95" width="540" height="410" rx="4"/>
+    <!-- Центральная линия -->
+    <line x1="400" y1="95" x2="400" y2="505"/>
+    <!-- Центральный круг -->
+    <circle cx="400" cy="300" r="50"/>
+
+    <!-- Левая зона: 3-очковая дуга -->
+    <path d="M 130 150 L 195 150 A 155 155 0 0 1 195 450 L 130 450"/>
+    <!-- Левая штрафная зона и круг броска -->
+    <rect x="130" y="235" width="125" height="130"/>
+    <circle cx="255" cy="300" r="45"/>
+    <!-- Левый щит и кольцо -->
+    <line x1="155" y1="270" x2="155" y2="330" stroke="#fef08a" stroke-width="4"/>
+    <line x1="130" y1="300" x2="155" y2="300" stroke="#fef08a" stroke-width="3"/>
+    <circle cx="170" cy="300" r="9" stroke="#ea580c" stroke-width="3" fill="none"/>
+
+    <!-- Правая зона: 3-очковая дуга -->
+    <path d="M 670 150 L 605 150 A 155 155 0 0 0 605 450 L 670 450"/>
+    <!-- Правая штрафная зона и круг броска -->
+    <rect x="545" y="235" width="125" height="130"/>
+    <circle cx="545" cy="300" r="45"/>
+    <!-- Правый щит и кольцо -->
+    <line x1="645" y1="270" x2="645" y2="330" stroke="#fef08a" stroke-width="4"/>
+    <line x1="670" y1="300" x2="645" y2="300" stroke="#fef08a" stroke-width="3"/>
+    <circle cx="630" cy="300" r="9" stroke="#ea580c" stroke-width="3" fill="none"/>
+  </g>
+
+  
+    <g fill="#166534" stroke="#d1fae5" stroke-width="1.5">
+      <rect x="260" y="555" width="80" height="14" rx="3"/>
+      <rect x="460" y="555" width="80" height="14" rx="3"/>
+      <rect x="360" y="555" width="80" height="14" rx="3"/>
+    </g>
+  
+  
+    <!-- Осветительные мачты -->
+    <g fill="#cbd5e1" stroke="#475569" stroke-width="2">
+      <circle cx="50" cy="40" r="7"/>
+      <circle cx="750" cy="40" r="7"/>
+      <circle cx="50" cy="560" r="7"/>
+      <circle cx="750" cy="560" r="7"/>
+    </g>
+  
+  
+</svg>

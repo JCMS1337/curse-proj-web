@@ -79,18 +79,23 @@ async function loadVenueDetails() {
     document.getElementById('venue-description').textContent = currentVenue.description || 'Описание отсутствует.';
 
     // Галерея фото
+    const defaultPhoto = `/img/venues/${getSportFolder(currentVenue.sport_type_id)}/1.svg`;
     const photos = currentVenue.photos && currentVenue.photos.length > 0
       ? currentVenue.photos
-      : [{ photo_url: '/img/venues/football_1.svg' }];
+      : [{ photo_url: defaultPhoto }];
 
     const mainPhoto = document.getElementById('main-photo');
     mainPhoto.src = photos[0].photo_url;
+    mainPhoto.onerror = function() {
+      this.onerror = null;
+      this.src = defaultPhoto;
+    };
 
     const thumbContainer = document.getElementById('thumbnails-container');
     thumbContainer.innerHTML = photos.map((p, idx) => `
-      <button type="button" class="w-20 h-14 rounded-lg overflow-hidden border-2 flex-shrink-0 transition ${idx === 0 ? 'border-[#16a34a] ring-2 ring-[#d1fae5]' : 'border-transparent hover:border-slate-300'}"
+      <button type="button" class="w-24 aspect-[4/3] rounded-lg overflow-hidden border-2 flex-shrink-0 transition ${idx === 0 ? 'border-[#16a34a] ring-2 ring-[#d1fae5]' : 'border-transparent hover:border-slate-300'}"
               onclick="selectPhoto('${p.photo_url}', this)">
-        <img src="${p.photo_url}" class="w-full h-full object-cover">
+        <img src="${p.photo_url}" alt="Миниатюра" loading="lazy" width="96" height="72" onerror="this.onerror=null; this.src='${defaultPhoto}';" class="w-full h-full object-cover">
       </button>
     `).join('');
 
@@ -309,5 +314,18 @@ async function handleBookingSubmit(e) {
   } finally {
     submitBtn.disabled = false;
     submitBtn.innerHTML = originalBtnText;
+  }
+}
+
+// Определение папки по ID вида спорта
+function getSportFolder(sportTypeId) {
+  const id = parseInt(sportTypeId, 10);
+  switch (id) {
+    case 1: return 'football';
+    case 2: return 'basketball';
+    case 3: return 'volleyball';
+    case 4: return 'universal';
+    case 5: return 'athletics';
+    default: return 'football';
   }
 }

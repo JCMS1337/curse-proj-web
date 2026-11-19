@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%">
+  <defs>
+    <radialGradient id="lightGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fef08a" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#fef08a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Фон и круговое ограждение -->
+  <rect width="800" height="600" fill="#15803d"/>
+  <rect x="65" y="45" width="670" height="510" rx="20" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="3" stroke-dasharray="7,4"/>
+
+  <!-- Основное полимерное покрытие корта -->
+  <rect x="85" y="65" width="630" height="470" rx="12" fill="#16a34a"/>
+
+  <!-- 1. Футбольная разметка (белый цвет) -->
+  <g stroke="#ffffff" stroke-width="3" fill="none">
+    <rect x="120" y="90" width="560" height="420" rx="6"/>
+    <line x1="400" y1="90" x2="400" y2="510"/>
+    <circle cx="400" cy="300" r="50"/>
+    <!-- Мини-футбольные вратарские зоны -->
+    <rect x="120" y="210" width="70" height="180"/>
+    <rect x="105" y="250" width="15" height="100" fill="rgba(255,255,255,0.25)" stroke-width="2"/>
+    <rect x="610" y="210" width="70" height="180"/>
+    <rect x="680" y="250" width="15" height="100" fill="rgba(255,255,255,0.25)" stroke-width="2"/>
+  </g>
+
+  <!-- 2. Баскетбольная разметка (желтый цвет) -->
+  <g stroke="#facc15" stroke-width="2.5" fill="none">
+    <path d="M 120 160 L 190 160 A 140 140 0 0 1 190 440 L 120 440"/>
+    <rect x="120" y="235" width="105" height="130"/>
+    <circle cx="225" cy="300" r="38"/>
+    <circle cx="155" cy="300" r="8" stroke="#ea580c" stroke-width="2.5"/>
+
+    <path d="M 680 160 L 610 160 A 140 140 0 0 0 610 440 L 680 440"/>
+    <rect x="575" y="235" width="105" height="130"/>
+    <circle cx="575" cy="300" r="38"/>
+    <circle cx="645" cy="300" r="8" stroke="#ea580c" stroke-width="2.5"/>
+  </g>
+
+  <!-- 3. Волейбольная разметка (голубая пунктирная) -->
+  <g stroke="#5eead4" stroke-width="2" stroke-dasharray="6,4" fill="none">
+    <rect x="190" y="140" width="420" height="320"/>
+    <line x1="330" y1="140" x2="330" y2="460"/>
+    <line x1="470" y1="140" x2="470" y2="460"/>
+  </g>
+
+  <!-- Центральная съемная сетка / стойки -->
+  <line x1="400" y1="80" x2="400" y2="520" stroke="#ffffff" stroke-width="4" stroke-dasharray="3,3"/>
+  <circle cx="400" cy="80" r="5" fill="#f8fafc" stroke="#334155" stroke-width="2"/>
+  <circle cx="400" cy="520" r="5" fill="#f8fafc" stroke="#334155" stroke-width="2"/>
+
+  
+    <g fill="#166534" stroke="#d1fae5" stroke-width="1.5">
+      <rect x="260" y="555" width="80" height="14" rx="3"/>
+      <rect x="460" y="555" width="80" height="14" rx="3"/>
+      <rect x="360" y="555" width="80" height="14" rx="3"/>
+    </g>
+  
+  
+    <!-- Осветительные мачты -->
+    <g fill="#cbd5e1" stroke="#475569" stroke-width="2">
+      <circle cx="50" cy="40" r="7"/>
+      <circle cx="750" cy="40" r="7"/>
+      <circle cx="50" cy="560" r="7"/>
+      <circle cx="750" cy="560" r="7"/>
+    </g>
+  
+  
+</svg>

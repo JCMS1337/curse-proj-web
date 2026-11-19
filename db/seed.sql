@@ -240,49 +240,128 @@ INSERT INTO venue_equipment (venue_id, name, quantity, condition) VALUES
 (30, 'Яма для прыжков в длину двойная', 1, 'Отличное'),
 (30, 'Гимнастический комплекс ОФП разновысокий', 1, 'Отличное');
 
--- 7. Локальные SVG фотографии для всех 30 площадок (по 2-3 фото на площадку)
+-- 7. Локальные SVG фотографии для всех 30 площадок (по 3 фото на площадку по формуле (id + n) % 4)
 INSERT INTO venue_photos (venue_id, photo_url, sort_order) VALUES
--- 1-2 Футбол левый берег
-(1, '/img/venues/football_1.svg', 1), (1, '/img/venues/football_2.svg', 2),
-(2, '/img/venues/football_2.svg', 1), (2, '/img/venues/football_3.svg', 2),
--- 3-4 Баскетбол левый берег
-(3, '/img/venues/basketball_1.svg', 1), (3, '/img/venues/basketball_2.svg', 2),
-(4, '/img/venues/basketball_2.svg', 1), (4, '/img/venues/basketball_3.svg', 2),
--- 5-6 Волейбол левый берег
-(5, '/img/venues/volleyball_1.svg', 1), (5, '/img/venues/volleyball_2.svg', 2),
-(6, '/img/venues/volleyball_2.svg', 1), (6, '/img/venues/volleyball_3.svg', 2),
--- 7-8 Универсальная левый берег
-(7, '/img/venues/universal_1.svg', 1), (7, '/img/venues/universal_2.svg', 2),
-(8, '/img/venues/universal_2.svg', 1), (8, '/img/venues/universal_3.svg', 2),
--- 9-10 Легкая атлетика левый берег
-(9, '/img/venues/athletics_1.svg', 1), (9, '/img/venues/athletics_2.svg', 2),
-(10, '/img/venues/athletics_2.svg', 1), (10, '/img/venues/athletics_3.svg', 2),
-
--- 11-14 Футбол правый берег
-(11, '/img/venues/football_1.svg', 1), (11, '/img/venues/football_2.svg', 2), (11, '/img/venues/football_3.svg', 3),
-(12, '/img/venues/football_2.svg', 1), (12, '/img/venues/football_3.svg', 2),
-(13, '/img/venues/football_3.svg', 1), (13, '/img/venues/football_1.svg', 2),
-(14, '/img/venues/football_1.svg', 1), (14, '/img/venues/football_2.svg', 2),
--- 15-18 Баскетбол правый берег
-(15, '/img/venues/basketball_1.svg', 1), (15, '/img/venues/basketball_2.svg', 2), (15, '/img/venues/basketball_3.svg', 3),
-(16, '/img/venues/basketball_2.svg', 1), (16, '/img/venues/basketball_3.svg', 2),
-(17, '/img/venues/basketball_3.svg', 1), (17, '/img/venues/basketball_1.svg', 2),
-(18, '/img/venues/basketball_1.svg', 1), (18, '/img/venues/basketball_2.svg', 2),
--- 19-22 Волейбол правый берег
-(19, '/img/venues/volleyball_1.svg', 1), (19, '/img/venues/volleyball_2.svg', 2), (19, '/img/venues/volleyball_3.svg', 3),
-(20, '/img/venues/volleyball_2.svg', 1), (20, '/img/venues/volleyball_3.svg', 2),
-(21, '/img/venues/volleyball_3.svg', 1), (21, '/img/venues/volleyball_1.svg', 2),
-(22, '/img/venues/volleyball_1.svg', 1), (22, '/img/venues/volleyball_2.svg', 2),
--- 23-26 Универсальная правый берег
-(23, '/img/venues/universal_1.svg', 1), (23, '/img/venues/universal_2.svg', 2), (23, '/img/venues/universal_3.svg', 3),
-(24, '/img/venues/universal_2.svg', 1), (24, '/img/venues/universal_3.svg', 2),
-(25, '/img/venues/universal_3.svg', 1), (25, '/img/venues/universal_1.svg', 2),
-(26, '/img/venues/universal_1.svg', 1), (26, '/img/venues/universal_2.svg', 2),
--- 27-30 Легкая атлетика правый берег
-(27, '/img/venues/athletics_1.svg', 1), (27, '/img/venues/athletics_2.svg', 2), (27, '/img/venues/athletics_3.svg', 3),
-(28, '/img/venues/athletics_2.svg', 1), (28, '/img/venues/athletics_3.svg', 2),
-(29, '/img/venues/athletics_3.svg', 1), (29, '/img/venues/athletics_1.svg', 2),
-(30, '/img/venues/athletics_1.svg', 1), (30, '/img/venues/athletics_2.svg', 2);
+-- Площадка #1 (football)
+(1, '/img/venues/football/2.svg', 1),
+(1, '/img/venues/football/3.svg', 2),
+(1, '/img/venues/football/4.svg', 3),
+-- Площадка #2 (football)
+(2, '/img/venues/football/3.svg', 1),
+(2, '/img/venues/football/4.svg', 2),
+(2, '/img/venues/football/1.svg', 3),
+-- Площадка #3 (basketball)
+(3, '/img/venues/basketball/4.svg', 1),
+(3, '/img/venues/basketball/1.svg', 2),
+(3, '/img/venues/basketball/2.svg', 3),
+-- Площадка #4 (basketball)
+(4, '/img/venues/basketball/1.svg', 1),
+(4, '/img/venues/basketball/2.svg', 2),
+(4, '/img/venues/basketball/3.svg', 3),
+-- Площадка #5 (volleyball)
+(5, '/img/venues/volleyball/2.svg', 1),
+(5, '/img/venues/volleyball/3.svg', 2),
+(5, '/img/venues/volleyball/4.svg', 3),
+-- Площадка #6 (volleyball)
+(6, '/img/venues/volleyball/3.svg', 1),
+(6, '/img/venues/volleyball/4.svg', 2),
+(6, '/img/venues/volleyball/1.svg', 3),
+-- Площадка #7 (universal)
+(7, '/img/venues/universal/4.svg', 1),
+(7, '/img/venues/universal/1.svg', 2),
+(7, '/img/venues/universal/2.svg', 3),
+-- Площадка #8 (universal)
+(8, '/img/venues/universal/1.svg', 1),
+(8, '/img/venues/universal/2.svg', 2),
+(8, '/img/venues/universal/3.svg', 3),
+-- Площадка #9 (athletics)
+(9, '/img/venues/athletics/2.svg', 1),
+(9, '/img/venues/athletics/3.svg', 2),
+(9, '/img/venues/athletics/4.svg', 3),
+-- Площадка #10 (athletics)
+(10, '/img/venues/athletics/3.svg', 1),
+(10, '/img/venues/athletics/4.svg', 2),
+(10, '/img/venues/athletics/1.svg', 3),
+-- Площадка #11 (football)
+(11, '/img/venues/football/4.svg', 1),
+(11, '/img/venues/football/1.svg', 2),
+(11, '/img/venues/football/2.svg', 3),
+-- Площадка #12 (football)
+(12, '/img/venues/football/1.svg', 1),
+(12, '/img/venues/football/2.svg', 2),
+(12, '/img/venues/football/3.svg', 3),
+-- Площадка #13 (football)
+(13, '/img/venues/football/2.svg', 1),
+(13, '/img/venues/football/3.svg', 2),
+(13, '/img/venues/football/4.svg', 3),
+-- Площадка #14 (football)
+(14, '/img/venues/football/3.svg', 1),
+(14, '/img/venues/football/4.svg', 2),
+(14, '/img/venues/football/1.svg', 3),
+-- Площадка #15 (basketball)
+(15, '/img/venues/basketball/4.svg', 1),
+(15, '/img/venues/basketball/1.svg', 2),
+(15, '/img/venues/basketball/2.svg', 3),
+-- Площадка #16 (basketball)
+(16, '/img/venues/basketball/1.svg', 1),
+(16, '/img/venues/basketball/2.svg', 2),
+(16, '/img/venues/basketball/3.svg', 3),
+-- Площадка #17 (basketball)
+(17, '/img/venues/basketball/2.svg', 1),
+(17, '/img/venues/basketball/3.svg', 2),
+(17, '/img/venues/basketball/4.svg', 3),
+-- Площадка #18 (basketball)
+(18, '/img/venues/basketball/3.svg', 1),
+(18, '/img/venues/basketball/4.svg', 2),
+(18, '/img/venues/basketball/1.svg', 3),
+-- Площадка #19 (volleyball)
+(19, '/img/venues/volleyball/4.svg', 1),
+(19, '/img/venues/volleyball/1.svg', 2),
+(19, '/img/venues/volleyball/2.svg', 3),
+-- Площадка #20 (volleyball)
+(20, '/img/venues/volleyball/1.svg', 1),
+(20, '/img/venues/volleyball/2.svg', 2),
+(20, '/img/venues/volleyball/3.svg', 3),
+-- Площадка #21 (volleyball)
+(21, '/img/venues/volleyball/2.svg', 1),
+(21, '/img/venues/volleyball/3.svg', 2),
+(21, '/img/venues/volleyball/4.svg', 3),
+-- Площадка #22 (volleyball)
+(22, '/img/venues/volleyball/3.svg', 1),
+(22, '/img/venues/volleyball/4.svg', 2),
+(22, '/img/venues/volleyball/1.svg', 3),
+-- Площадка #23 (universal)
+(23, '/img/venues/universal/4.svg', 1),
+(23, '/img/venues/universal/1.svg', 2),
+(23, '/img/venues/universal/2.svg', 3),
+-- Площадка #24 (universal)
+(24, '/img/venues/universal/1.svg', 1),
+(24, '/img/venues/universal/2.svg', 2),
+(24, '/img/venues/universal/3.svg', 3),
+-- Площадка #25 (universal)
+(25, '/img/venues/universal/2.svg', 1),
+(25, '/img/venues/universal/3.svg', 2),
+(25, '/img/venues/universal/4.svg', 3),
+-- Площадка #26 (universal)
+(26, '/img/venues/universal/3.svg', 1),
+(26, '/img/venues/universal/4.svg', 2),
+(26, '/img/venues/universal/1.svg', 3),
+-- Площадка #27 (athletics)
+(27, '/img/venues/athletics/4.svg', 1),
+(27, '/img/venues/athletics/1.svg', 2),
+(27, '/img/venues/athletics/2.svg', 3),
+-- Площадка #28 (athletics)
+(28, '/img/venues/athletics/1.svg', 1),
+(28, '/img/venues/athletics/2.svg', 2),
+(28, '/img/venues/athletics/3.svg', 3),
+-- Площадка #29 (athletics)
+(29, '/img/venues/athletics/2.svg', 1),
+(29, '/img/venues/athletics/3.svg', 2),
+(29, '/img/venues/athletics/4.svg', 3),
+-- Площадка #30 (athletics)
+(30, '/img/venues/athletics/3.svg', 1),
+(30, '/img/venues/athletics/4.svg', 2),
+(30, '/img/venues/athletics/1.svg', 3);
 
 -- 8. Блокировки на ремонт
 -- Блокировка площадки № 3 через 6 дней

@@ -85,3 +85,34 @@ html {
 .time-slot.selected span {
   color: #ffffff !important;
 }
+
+/* Стилизация кластеров Leaflet.markercluster в зелёной гамме SportBook */
+.marker-cluster-small,
+.marker-cluster-medium,
+.marker-cluster-large {
+  background-color: rgba(22, 163, 74, 0.35) !important;
+}
+
+.marker-cluster-small div,
+.marker-cluster-medium div,
+.marker-cluster-large div {
+  background-color: #166534 !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-family: inherit !important;
+  font-size: 12px !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25) !important;
+}
+
+.marker-cluster {
+  background-clip: padding-box;
+  border-radius: 50%;
+}
+
+/* Подсветка карточки в списке при клике на маркер */
+.venue-card.card-highlighted {
+  border-color: #16a34a !important;
+  background-color: #f0fdf4 !important;
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.2) !important;
+  transform: translateY(-2px);
+}

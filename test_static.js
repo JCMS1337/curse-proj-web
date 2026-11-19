@@ -1,6 +1,7 @@
 /**
  * Скрипт проверки раздачи клиентских страниц и статических ресурсов Express сервером.
  */
+process.env.NODE_ENV = 'test';
 const http = require('http');
 const app = require('./server');
 
@@ -24,11 +25,11 @@ const urls = [
   '/js/cabinet.js',
   '/js/admin.js',
   '/img/hero-banner.svg',
-  '/img/venues/football_1.svg',
-  '/img/venues/basketball_1.svg',
-  '/img/venues/volleyball_1.svg',
-  '/img/venues/universal_1.svg',
-  '/img/venues/athletics_1.svg',
+  '/img/venues/football/1.svg',
+  '/img/venues/basketball/1.svg',
+  '/img/venues/volleyball/1.svg',
+  '/img/venues/universal/1.svg',
+  '/img/venues/athletics/1.svg',
 ];
 
 async function checkUrl(url) {
