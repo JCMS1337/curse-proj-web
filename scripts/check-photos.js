@@ -1,12 +1,14 @@
 /**
+ * scripts/check-photos.js
  * Скрипт проверки фотографий спортивных площадок.
  * - Читает из БД все записи venue_photos;
  * - Проверяет наличие файла на диске в public/;
  * - Запускает локальный тестовый HTTP-сервер и проверяет код 200 и тип image/*;
- * - Выводит форматированную таблицу результатов;
- * - Проверяет, что у каждой площадки есть минимум 2 фото.
+ * - Выводит форматированную таблицу результатов с указанием типа фото (реальное / SVG);
+ * - Проверяет, что у каждой площадки есть минимум 3 фото и не менее 1 реального фото.
  */
 
+process.env.NODE_ENV = 'test';
 require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
@@ -30,9 +32,9 @@ async function checkUrlHttp(urlPath) {
 }
 
 async function main() {
-  console.log('========================================================================================');
-  console.log('                 ДИАГНОСТИКА ФОТОГРАФИЙ СПОРТИВНЫХ ПЛОЩАДОК SPORTBOOK                   ');
-  console.log('========================================================================================\n');
+  console.log('====================================================================================================');
+  console.log('                    ДИАГНОСТИКА ФОТОГРАФИЙ СПОРТИВНЫХ ПЛОЩАДОК SPORTBOOK                            ');
+  console.log('====================================================================================================\n');
 
   // Запуск тестового инстанса сервера для проверки отдачи статики
   const server = app.listen(TEST_PORT);
@@ -40,7 +42,8 @@ async function main() {
   try {
     const venuesRes = await db.query('SELECT id, name FROM venues ORDER BY id ASC');
     const photosRes = await db.query(`
-      SELECT vp.id, vp.venue_id, v.name as venue_name, vp.photo_url, vp.sort_order
+      SELECT vp.id, vp.venue_id, v.name as venue_name, vp.photo_url, vp.sort_order,
+             vp.is_real, vp.author, vp.license, vp.source_url
       FROM venue_photos vp
       JOIN venues v ON vp.venue_id = v.id
       ORDER BY vp.venue_id ASC, vp.sort_order ASC, vp.id ASC
@@ -52,18 +55,23 @@ async function main() {
     console.log(`Найдено площадок в БД: ${venues.length}`);
     console.log(`Найдено записей фото в БД: ${photos.length}\n`);
 
-    console.log('ID  | Площадка (первые 32 симв.)         | URL фотографии                      | Статус');
-    console.log('----+-----------------------------------+-------------------------------------+------------------');
+    console.log('ID  | Площадка (первые 30 симв.)       | URL фотографии                      | Тип       | Статус');
+    console.log('----+---------------------------------+-------------------------------------+-----------+------------------');
 
     const photosByVenue = {};
     let okCount = 0;
     let errCount = 0;
+    let totalReal = 0;
+    let totalSvg = 0;
 
     for (const p of photos) {
       if (!photosByVenue[p.venue_id]) {
         photosByVenue[p.venue_id] = [];
       }
       photosByVenue[p.venue_id].push(p);
+
+      if (p.is_real) totalReal++;
+      else totalSvg++;
 
       // Проверка на диске
       const cleanPath = p.photo_url.split('?')[0];
@@ -91,35 +99,44 @@ async function main() {
       }
 
       const idStr = String(p.venue_id).padEnd(3);
-      const nameStr = p.venue_name.slice(0, 33).padEnd(33);
+      const nameStr = p.venue_name.slice(0, 31).padEnd(31);
       const urlStr = p.photo_url.padEnd(35);
-      console.log(`${idStr} | ${nameStr} | ${urlStr} | ${status}`);
+      const typeStr = p.is_real ? 'Реальное ' : 'SVG-схема';
+      console.log(`${idStr} | ${nameStr} | ${urlStr} | ${typeStr} | ${status}`);
     }
 
-    console.log('----+-----------------------------------+-------------------------------------+------------------\n');
+    console.log('----+---------------------------------+-------------------------------------+-----------+------------------\n');
 
-    // Проверка наличия минимум 2 фото у каждой площадки
-    console.log('ПРОВЕРКА КОЛИЧЕСТВА ФОТОГРАФИЙ НА ПЛОЩАДКУ (МИНИМУМ 2 ФОТО):');
-    let venuesWithDeficit = 0;
+    // Проверка наличия минимум 3 фото и минимум 1 реального фото у каждой площадки
+    console.log('ПРОВЕРКА КОЛИЧЕСТВА И ТИПА ФОТОГРАФИЙ НА ПЛОЩАДКУ:');
+    let venuesWithDeficitTotal = 0;
+    let venuesWithDeficitReal = 0;
 
     for (const v of venues) {
       const vPhotos = photosByVenue[v.id] || [];
-      const count = vPhotos.length;
-      if (count < 2) {
-        console.log(`  [ВНИМАНИЕ] Площадка #${v.id} "${v.name}" имеет ${count} фото (требуется >= 2)!`);
-        venuesWithDeficit++;
+      const totalCount = vPhotos.length;
+      const realCount = vPhotos.filter(x => x.is_real).length;
+
+      if (totalCount < 3) {
+        console.log(`  [ВНИМАНИЕ] Площадка #${v.id} "${v.name}" имеет ${totalCount} фото (требуется >= 3)!`);
+        venuesWithDeficitTotal++;
+      }
+      if (realCount < 1) {
+        console.log(`  [ВНИМАНИЕ] Площадка #${v.id} "${v.name}" не имеет реальных фото (требуется >= 1)!`);
+        venuesWithDeficitReal++;
       }
     }
 
-    if (venuesWithDeficit === 0) {
-      console.log(`  [УСПЕХ] Все ${venues.length} площадок имеют 2 и более фото!`);
+    if (venuesWithDeficitTotal === 0 && venuesWithDeficitReal === 0) {
+      console.log(`  [УСПЕХ] Все ${venues.length} площадок имеют 3 фото со статусом OK, из них минимум 1 реальное!`);
     } else {
-      console.log(`  [ОШИБКА] ${venuesWithDeficit} площадок имеют менее 2 фото.`);
+      if (venuesWithDeficitTotal > 0) console.log(`  [ОШИБКА] ${venuesWithDeficitTotal} площадок имеют менее 3 фото.`);
+      if (venuesWithDeficitReal > 0) console.log(`  [ОШИБКА] ${venuesWithDeficitReal} площадок не имеют реальных фото.`);
     }
 
-    console.log('\n========================================================================================');
-    console.log(`ИТОГИ: Всего фото: ${photos.length} | Успешно (OK): ${okCount} | С ошибками: ${errCount}`);
-    console.log('========================================================================================\n');
+    console.log('\n====================================================================================================');
+    console.log(`ИТОГИ: Всего фото: ${photos.length} (Реальных: ${totalReal}, SVG: ${totalSvg}) | Успешно (OK): ${okCount} | С ошибками: ${errCount}`);
+    console.log('====================================================================================================\n');
 
   } catch (err) {
     console.error('Ошибка выполнения проверки фото:', err);

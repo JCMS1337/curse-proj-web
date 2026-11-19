@@ -34,7 +34,18 @@ async function getVenues(req, res, next) {
                LIMIT 1
              ) AS main_photo_url,
              (
-               SELECT json_agg(json_build_object('id', vp.id, 'photo_url', vp.photo_url, 'sort_order', vp.sort_order))
+               SELECT json_agg(json_build_object(
+                 'id', vp.id, 
+                 'photo_url', vp.photo_url, 
+                 'url', vp.photo_url,
+                 'sort_order', vp.sort_order,
+                 'is_real', vp.is_real,
+                 'author', vp.author,
+                 'license', vp.license,
+                 'license_url', vp.license_url,
+                 'source_url', vp.source_url,
+                 'title', vp.title
+               ) ORDER BY vp.sort_order ASC, vp.id ASC)
                FROM venue_photos vp
                WHERE vp.venue_id = v.id
              ) AS photos,
@@ -152,7 +163,7 @@ async function getVenueById(req, res, next) {
 
     // Фотографии площадки
     const photosRes = await db.query(
-      `SELECT id, photo_url, sort_order 
+      `SELECT id, photo_url, photo_url AS url, sort_order, is_real, author, license, license_url, source_url, title 
        FROM venue_photos 
        WHERE venue_id = $1 
        ORDER BY sort_order ASC, id ASC`,
@@ -276,10 +287,32 @@ async function getDistricts(req, res, next) {
   }
 }
 
+// Получение списка всех использованных реальных фотографий для страницы credits.html
+async function getPhotoCredits(req, res, next) {
+  try {
+    const result = await db.query(`
+      SELECT DISTINCT ON (photo_url)
+             id, photo_url, photo_url AS url, is_real, author, license, license_url, source_url, title
+      FROM venue_photos
+      WHERE is_real = true AND source_url IS NOT NULL
+      ORDER BY photo_url ASC, id ASC
+    `);
+
+    res.json({
+      success: true,
+      count: result.rowCount,
+      data: result.rows,
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
 module.exports = {
   getVenues,
   getVenueById,
   getVenueAvailability,
   getSportTypes,
   getDistricts,
+  getPhotoCredits,
 };

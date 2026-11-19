@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Источники изображений и лицензии — SportBook</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Axios & SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="bg-[#f0fdf4] text-[#1f2937] min-h-screen flex flex-col antialiased">
+
+  <!-- Шапка сайта -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-[#d1fae5]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="/index.html" class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-[#16a34a] text-white flex items-center justify-center shadow-md">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-bold text-lg text-slate-900 leading-tight">SportBook</span>
+          <span class="text-xs text-[#166534] font-medium">Бронирование площадок</span>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
+        <a href="/index.html" class="hover:text-[#16a34a] transition">Главная</a>
+        <a href="/venues.html" class="hover:text-[#16a34a] transition">Каталог площадок</a>
+        <a id="nav-cabinet-link" href="/cabinet.html" class="hidden hover:text-[#16a34a] transition">Мои бронирования</a>
+        <a id="nav-admin-link" href="/admin.html" class="hidden hover:text-[#16a34a] transition">Управление</a>
+      </nav>
+
+      <div id="nav-auth-container"></div>
+    </div>
+  </header>
+
+  <!-- Основной контент -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- Хлебные крошки -->
+    <nav class="flex items-center gap-2 text-xs text-slate-500 mb-6">
+      <a href="/index.html" class="hover:text-[#16a34a] transition">Главная</a>
+      <span>/</span>
+      <span class="text-slate-800 font-medium">Источники изображений</span>
+    </nav>
+
+    <!-- Заголовок и правовая информация -->
+    <div class="bg-white p-6 sm:p-8 rounded-2xl border border-[#d1fae5] shadow-sm mb-8">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-[#dcfce7] text-[#166534] mb-3">
+        <span>Лицензионная чистота данных</span>
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">
+        Источники изображений и открытые лицензии
+      </h1>
+      <p class="mt-3 text-sm text-slate-600 leading-relaxed max-w-4xl">
+        В рамках учебного курсового проекта <b>SportBook</b> спортивные площадки являются тестовыми объектами инфраструктуры. 
+        В демонстрационных целях в карточках используются исключительно иллюстративные фотографии со свободными лицензиями 
+        (<b>CC0, Public Domain, CC BY, CC BY-SA</b>) из открытого репозитория <b>Wikimedia Commons</b>.
+      </p>
+      <div class="mt-4 p-4 rounded-xl bg-[#f0fdf4] border border-[#d1fae5] text-xs text-[#166534] flex items-center gap-3">
+        <span class="text-lg">⚖️</span>
+        <div>
+          Все авторские права сохранены за соответствующими правообладателями. 
+          Ниже приведён полный перечень использованных иллюстративных фотографий с указанием авторов, лицензий и прямых ссылок на оригиналы.
+        </div>
+      </div>
+    </div>
+
+    <!-- Таблица используемых изображений -->
+    <div class="bg-white rounded-2xl border border-[#d1fae5] shadow-sm overflow-hidden">
+      <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+        <h2 class="font-bold text-slate-900 text-base">Использованные фотографии</h2>
+        <span id="credits-count-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#dcfce7] text-[#166534]">
+          Загрузка...
+        </span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-slate-50 text-slate-500 uppercase font-semibold border-b border-slate-100">
+            <tr>
+              <th scope="col" class="px-6 py-3 w-28">Миниатюра</th>
+              <th scope="col" class="px-6 py-3">Название / Описание</th>
+              <th scope="col" class="px-6 py-3">Автор</th>
+              <th scope="col" class="px-6 py-3">Лицензия</th>
+              <th scope="col" class="px-6 py-3 text-right">Первоисточник</th>
+            </tr>
+          </thead>
+          <tbody id="credits-table-body" class="divide-y divide-slate-100">
+            <tr>
+              <td colspan="5" class="px-6 py-8 text-center text-slate-400">
+                Загрузка сведений об авторах и лицензиях...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Подвал сайта -->
+  <footer class="bg-white border-t border-[#d1fae5] py-8 text-xs text-slate-600 mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div>
+        © 2026 <b>SportBook</b>. Муниципальная система бронирования спортивных площадок.
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="/venues.html" class="hover:text-[#16a34a] transition">Каталог площадок</a>
+        <a href="/credits.html" class="text-[#16a34a] font-bold">Источники изображений</a>
+        <a href="/login.html" class="hover:text-[#16a34a] transition">Личный кабинет</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Скрипты -->
+  <script src="/js/api.js"></script>
+  <script src="/js/credits.js"></script>
+</body>
+</html>

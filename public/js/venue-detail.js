@@ -4,6 +4,7 @@
 
 let venueId = null;
 let currentVenue = null;
+let currentPhotosList = [];
 let currentAvailability = null;
 let selectedDateStr = null;
 
@@ -82,19 +83,24 @@ async function loadVenueDetails() {
     const defaultPhoto = `/img/venues/${getSportFolder(currentVenue.sport_type_id)}/1.svg`;
     const photos = currentVenue.photos && currentVenue.photos.length > 0
       ? currentVenue.photos
-      : [{ photo_url: defaultPhoto }];
+      : [{ photo_url: defaultPhoto, is_real: false }];
+
+    currentPhotosList = photos;
 
     const mainPhoto = document.getElementById('main-photo');
     mainPhoto.src = photos[0].photo_url;
+    updatePhotoCredit(photos[0]);
+
     mainPhoto.onerror = function() {
       this.onerror = null;
       this.src = defaultPhoto;
+      updatePhotoCredit(null);
     };
 
     const thumbContainer = document.getElementById('thumbnails-container');
     thumbContainer.innerHTML = photos.map((p, idx) => `
       <button type="button" class="w-24 aspect-[4/3] rounded-lg overflow-hidden border-2 flex-shrink-0 transition ${idx === 0 ? 'border-[#16a34a] ring-2 ring-[#d1fae5]' : 'border-transparent hover:border-slate-300'}"
-              onclick="selectPhoto('${p.photo_url}', this)">
+              onclick="selectPhotoByIndex(${idx}, this)">
         <img src="${p.photo_url}" alt="Миниатюра" loading="lazy" width="96" height="72" onerror="this.onerror=null; this.src='${defaultPhoto}';" class="w-full h-full object-cover">
       </button>
     `).join('');
@@ -122,8 +128,35 @@ async function loadVenueDetails() {
   }
 }
 
-function selectPhoto(url, btn) {
-  document.getElementById('main-photo').src = url;
+function updatePhotoCredit(photo) {
+  const creditEl = document.getElementById('photo-credit');
+  const creditText = document.getElementById('photo-credit-text');
+  const creditSource = document.getElementById('photo-credit-source');
+  if (!creditEl || !creditText) return;
+
+  if (photo && photo.is_real && photo.author) {
+    const licUrl = photo.license_url || 'https://creativecommons.org/licenses/';
+    const licName = photo.license || 'Свободная лицензия';
+    creditText.innerHTML = `Иллюстративное фото. Автор: <b>${escapeHtml(photo.author)}</b>, <a href="${licUrl}" target="_blank" rel="noopener noreferrer" class="text-[#16a34a] hover:underline font-semibold">${escapeHtml(licName)}</a>`;
+    if (photo.source_url) {
+      creditSource.href = photo.source_url;
+      creditSource.classList.remove('hidden');
+    } else {
+      creditSource.classList.add('hidden');
+    }
+    creditEl.classList.remove('hidden');
+  } else {
+    creditEl.classList.add('hidden');
+  }
+}
+
+function selectPhotoByIndex(idx, btn) {
+  const p = currentPhotosList[idx];
+  if (!p) return;
+  const mainPhoto = document.getElementById('main-photo');
+  mainPhoto.src = p.photo_url;
+  updatePhotoCredit(p);
+
   document.querySelectorAll('#thumbnails-container button').forEach(b => {
     b.classList.remove('border-[#16a34a]', 'ring-2', 'ring-[#d1fae5]');
   });

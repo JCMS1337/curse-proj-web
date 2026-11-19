@@ -133,6 +133,17 @@ async function runTests() {
 
     const venueDetail = await request({ path: '/api/venues/1', method: 'GET' });
     console.log(`   Детали площадки 1: "${venueDetail.data.data.name}", берег: ${venueDetail.data.data.bank}, район: ${venueDetail.data.data.district}`);
+    const vPhotos = venueDetail.data.data.photos || [];
+    console.log(`   Фотографий у площадки 1: ${vPhotos.length}, первое фото реальное: ${vPhotos[0]?.is_real}, автор: "${vPhotos[0]?.author}"`);
+    if (!vPhotos[0]?.is_real || !vPhotos[0]?.author || !vPhotos[0]?.license) {
+      throw new Error('Первое фото площадки 1 должно быть реальным с указанием автора и лицензии!');
+    }
+
+    const creditsRes = await request({ path: '/api/venues/credits', method: 'GET' });
+    console.log(`   Эндпоинт /api/venues/credits: статус ${creditsRes.status}, фото с лицензиями: ${creditsRes.data.count}`);
+    if (creditsRes.status !== 200 || !creditsRes.data.data.length) {
+      throw new Error('Ошибка получения списка источников фото (/api/venues/credits)');
+    }
 
     // 6. Проверка доступности (/api/venues/:id/availability)
     console.log('\n6. Проверка доступности площадки (/api/venues/1/availability)...');

@@ -11,7 +11,9 @@
     "test:db": "node db/test_db.js",
     "photos:check": "node scripts/check-photos.js",
     "photos:scan": "node scripts/scan-photos.js",
-    "photos:generate": "node scripts/generate-venue-images.js"
+    "photos:generate": "node scripts/generate-venue-images.js",
+    "photos:fetch": "node scripts/fetch-real-photos.js",
+    "photos:assign": "node scripts/assign-real-photos.js"
   },
   "keywords": [
     "sport",
@@ -30,6 +32,7 @@
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.13.1",
+    "sharp": "^0.35.5",
     "zod": "^3.24.1"
   }
 }

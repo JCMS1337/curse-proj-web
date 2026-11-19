@@ -198,7 +198,7 @@ async function loadVenuesForSport(sportTypeId, fallbackPhoto) {
         <div class="bg-white rounded-2xl border border-[#d1fae5] shadow-sm hover:shadow-md hover:border-[#16a34a] transition overflow-hidden flex flex-col justify-between">
           <div class="relative w-full aspect-[4/3] bg-[#f0fdf4] overflow-hidden">
             <img src="${v.main_photo_url || fallbackPhoto}" 
-                 alt="${escapeHtml(v.name)}" 
+                 alt="Иллюстративное фото: ${escapeHtml(v.name)}" 
                  loading="lazy"
                  width="400"
                  height="300"

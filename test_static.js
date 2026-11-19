@@ -16,6 +16,7 @@ const urls = [
   '/login.html',
   '/cabinet.html',
   '/admin.html',
+  '/credits.html',
   '/css/styles.css',
   '/js/api.js',
   '/js/home.js',
@@ -24,12 +25,18 @@ const urls = [
   '/js/auth.js',
   '/js/cabinet.js',
   '/js/admin.js',
+  '/js/credits.js',
   '/img/hero-banner.svg',
   '/img/venues/football/1.svg',
   '/img/venues/basketball/1.svg',
   '/img/venues/volleyball/1.svg',
   '/img/venues/universal/1.svg',
   '/img/venues/athletics/1.svg',
+  '/img/venues/real/football/1.jpg',
+  '/img/venues/real/basketball/1.jpg',
+  '/img/venues/real/volleyball/1.jpg',
+  '/img/venues/real/universal/1.jpg',
+  '/img/venues/real/athletics/1.jpg',
 ];
 
 async function checkUrl(url) {

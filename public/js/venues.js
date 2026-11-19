@@ -277,7 +277,7 @@ function renderVenuesList(venues) {
     <div id="venue-card-${v.id}" class="venue-card p-3 rounded-xl border border-[#d1fae5] hover:border-[#16a34a] hover:shadow-sm bg-white transition cursor-pointer flex gap-3" onclick="focusOnVenue(${v.id})">
       <div class="w-28 flex-shrink-0 overflow-hidden rounded-lg bg-[#f0fdf4]" style="aspect-ratio: 4/3;">
         <img src="${v.main_photo_url || fallbackUrl}" 
-             alt="${escapeHtml(v.name)}" 
+             alt="Иллюстративное фото: ${escapeHtml(v.name)}" 
              loading="lazy"
              width="112"
              height="84"
