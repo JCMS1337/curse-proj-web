@@ -33,12 +33,12 @@ function switchTab(tab) {
   const registerContainer = document.getElementById('register-container');
 
   if (tab === 'login') {
-    tabLogin.className = 'flex-1 py-3 text-sm font-bold text-blue-600 border-b-2 border-blue-600 bg-white rounded-t-xl transition';
+    tabLogin.className = 'flex-1 py-3 text-sm font-bold text-[#16a34a] border-b-2 border-[#16a34a] bg-white rounded-t-xl transition';
     tabRegister.className = 'flex-1 py-3 text-sm font-medium text-slate-500 hover:text-slate-800 transition';
     loginContainer.classList.remove('hidden');
     registerContainer.classList.add('hidden');
   } else {
-    tabRegister.className = 'flex-1 py-3 text-sm font-bold text-blue-600 border-b-2 border-blue-600 bg-white rounded-t-xl transition';
+    tabRegister.className = 'flex-1 py-3 text-sm font-bold text-[#16a34a] border-b-2 border-[#16a34a] bg-white rounded-t-xl transition';
     tabLogin.className = 'flex-1 py-3 text-sm font-medium text-slate-500 hover:text-slate-800 transition';
     loginContainer.classList.add('hidden');
     registerContainer.classList.remove('hidden');

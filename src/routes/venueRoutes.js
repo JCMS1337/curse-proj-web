@@ -6,6 +6,8 @@ const router = express.Router();
 const venueController = require('../controllers/venueController');
 
 router.get('/', venueController.getVenues);
+router.get('/sport-types', venueController.getSportTypes);
+router.get('/districts', venueController.getDistricts);
 router.get('/:id', venueController.getVenueById);
 router.get('/:id/availability', venueController.getVenueAvailability);
 

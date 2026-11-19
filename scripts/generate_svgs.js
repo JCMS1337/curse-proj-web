@@ -1,0 +1,65 @@
+/**
+ * Генератор локальных векторных SVG-заглушек для спортивных площадок SportBook.
+ */
+const fs = require('fs');
+const path = require('path');
+
+const imgDir = path.join(__dirname, '..', 'public', 'img', 'venues');
+if (!fs.existsSync(imgDir)) {
+  fs.mkdirSync(imgDir, { recursive: true });
+}
+
+function makeSvg(sportName, color1, color2, iconPath, title, subtitle) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="${color1}"/>
+      <stop offset="100%" stop-color="${color2}"/>
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1.5"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#grad)"/>
+  <rect width="100%" height="100%" fill="url(#grid)"/>
+  <circle cx="400" cy="220" r="130" fill="rgba(255,255,255,0.12)"/>
+  <g transform="translate(350, 170) scale(4)" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    ${iconPath}
+  </g>
+  <text x="400" y="370" font-family="system-ui, -apple-system, sans-serif" font-size="26" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="1">${title}</text>
+  <text x="400" y="405" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="500" fill="rgba(255,255,255,0.85)" text-anchor="middle">${subtitle}</text>
+  <rect x="30" y="30" width="140" height="36" rx="8" fill="rgba(0,0,0,0.25)"/>
+  <text x="100" y="53" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">SportBook</text>
+</svg>`;
+}
+
+const icons = {
+  football: '<circle cx="12" cy="12" r="10"/><path d="m6.5 12 3-5h5l3 5-3.5 5.5h-4z"/><path d="M6.5 12 2 12"/><path d="M9.5 7 7.5 2.5"/><path d="M14.5 7l2-4.5"/><path d="M17.5 12l4.5 0"/><path d="M10.5 17.5l-2 4.5"/><path d="M13.5 17.5l2 4.5"/>',
+  basketball: '<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10"/><path d="M12 2a15.3 15.3 0 0 0-4 10 15.3 15.3 0 0 0 4 10"/>',
+  volleyball: '<circle cx="12" cy="12" r="10"/><path d="m18 15-6-3"/><path d="m15 6-3 6"/><path d="m6 9 6 3"/><path d="M10.5 21.5a10 10 0 0 0 9-9"/><path d="M3.5 14.5a10 10 0 0 0 9 9"/><path d="M14.5 3.5a10 10 0 0 0-9 9"/>',
+  universal: '<rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 12h20"/><path d="M12 5v14"/><circle cx="12" cy="12" r="3"/>',
+  athletics: '<path d="M4 18v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2"/><circle cx="12" cy="7" r="3"/><path d="M2 22h20"/><path d="m7 12 5 3 5-3"/>'
+};
+
+const sports = [
+  { key: 'football', name: 'Футбол', c1: '#15803d', c2: '#14532d' },
+  { key: 'basketball', name: 'Баскетбол', c1: '#16a34a', c2: '#166534' },
+  { key: 'volleyball', name: 'Волейбол', c1: '#059669', c2: '#064e3b' },
+  { key: 'universal', name: 'Универсальная площадка', c1: '#0d9488', c2: '#115e59' },
+  { key: 'athletics', name: 'Легкая атлетика', c1: '#16a34a', c2: '#14532d' }
+];
+
+sports.forEach(s => {
+  for (let i = 1; i <= 3; i++) {
+    const filename = `${s.key}_${i}.svg`;
+    const subtitles = [
+      'Муниципальный спортивный комплекс',
+      'Тренировочная арена и площадка',
+      'Открытая городская спортзона'
+    ];
+    const svg = makeSvg(s.name, s.c1, s.c2, icons[s.key], s.name, subtitles[i - 1]);
+    fs.writeFileSync(path.join(imgDir, filename), svg, 'utf8');
+  }
+});
+
+console.log('15 локальных SVG-заглушек успешно сгенерированы в public/img/venues/');

@@ -25,7 +25,7 @@ function switchAdminTab(tab) {
     const btn = document.getElementById(`admin-tab-${t}`);
     const sec = document.getElementById(`section-${t}`);
     if (t === tab) {
-      btn.className = 'pb-3 text-purple-600 border-b-2 border-purple-600 whitespace-nowrap transition';
+      btn.className = 'pb-3 text-[#16a34a] border-b-2 border-[#16a34a] whitespace-nowrap transition';
       sec.classList.remove('hidden');
     } else {
       btn.className = 'pb-3 text-slate-500 hover:text-slate-800 whitespace-nowrap transition';
@@ -78,7 +78,7 @@ async function loadAdminBookings() {
         </td>
         <td class="p-3.5 whitespace-nowrap">
           <span class="font-semibold text-slate-800 block">${formatDate(b.start_at)}</span>
-          <span class="text-[11px] text-blue-600">${formatTime(b.start_at)} — ${formatTime(b.end_at)}</span>
+          <span class="text-[11px] text-[#166534] font-medium">${formatTime(b.start_at)} — ${formatTime(b.end_at)}</span>
         </td>
         <td class="p-3.5">
           <span class="block truncate max-w-xs text-slate-700" title="${escapeHtml(b.purpose)}">${escapeHtml(b.purpose)}</span>
@@ -140,9 +140,12 @@ async function loadAdminVenues() {
           <span class="text-[11px] text-slate-400">${escapeHtml(v.dimensions || '')} • ${escapeHtml(v.surface_type || '')}</span>
         </td>
         <td class="p-3.5">
-          <span class="px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-semibold text-[10px]">${escapeHtml(v.sport_type_name)}</span>
+          <span class="px-2 py-0.5 rounded bg-[#dcfce7] text-[#166534] font-semibold text-[10px]">${escapeHtml(v.sport_type_name)}</span>
         </td>
-        <td class="p-3.5 text-slate-600 truncate max-w-xs">${escapeHtml(v.address)}</td>
+        <td class="p-3.5 text-slate-600 truncate max-w-xs">
+          <span>${escapeHtml(v.address)}</span>
+          <span class="block text-[10px] text-slate-400">${escapeHtml(v.district || '—')} район (${v.bank === 'left' ? 'левый берег' : 'правый берег'})</span>
+        </td>
         <td class="p-3.5 text-[11px] text-slate-500">
           ${v.has_lighting ? '💡 Освещение ' : ''}
           ${v.has_fence ? '🛡️ Ограждение' : ''}
@@ -247,7 +250,7 @@ async function loadAdminUsers() {
         <td class="p-3.5 text-slate-600">${escapeHtml(u.email)}</td>
         <td class="p-3.5 text-slate-500">${escapeHtml(u.phone || '—')}</td>
         <td class="p-3.5">
-          <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 text-purple-800">
+          <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#dcfce7] text-[#166534]">
             ${escapeHtml(u.role_name)}
           </span>
         </td>
@@ -325,6 +328,8 @@ function setupAdminForms() {
 
     const payload = {
       name: document.getElementById('venue-new-name').value.trim(),
+      bank: document.getElementById('venue-new-bank').value,
+      district: document.getElementById('venue-new-district').value.trim(),
       sport_type_id: parseInt(document.getElementById('venue-new-sport').value, 10),
       dimensions: document.getElementById('venue-new-dimensions').value.trim(),
       address: document.getElementById('venue-new-address').value.trim(),

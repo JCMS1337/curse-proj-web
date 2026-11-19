@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Панель управления — СпортБронь.НСК</title>
+  <title>Панель управления — SportBook</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Axios & SweetAlert2 -->
@@ -12,29 +12,29 @@
   <!-- Custom Styles -->
   <link rel="stylesheet" href="/css/styles.css">
 </head>
-<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col antialiased">
+<body class="bg-[#f0fdf4]/30 text-[#1f2937] min-h-screen flex flex-col antialiased">
 
   <!-- Навигационная панель -->
-  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200">
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-[#d1fae5]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <a href="/index.html" class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-purple-600 text-white flex items-center justify-center shadow-md">
+        <div class="w-10 h-10 rounded-xl bg-[#16a34a] text-white flex items-center justify-center shadow-md">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>
         </div>
         <div class="flex flex-col">
-          <span class="font-bold text-lg text-slate-900 leading-tight">СпортБронь<span class="text-purple-600">.Панель</span></span>
-          <span class="text-xs text-slate-600 font-medium">Администрирование</span>
+          <span class="font-bold text-lg text-slate-900 leading-tight">SportBook</span>
+          <span class="text-xs text-[#166534] font-medium">Администрирование</span>
         </div>
       </a>
 
       <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
-        <a href="/index.html" class="hover:text-blue-600 transition">Главная</a>
-        <a href="/venues.html" class="hover:text-blue-600 transition">Каталог и карта</a>
-        <a href="/cabinet.html" class="hover:text-blue-600 transition">Кабинет</a>
-        <a href="/admin.html" class="text-purple-600 font-semibold">Управление</a>
+        <a href="/index.html" class="hover:text-[#16a34a] transition">Главная</a>
+        <a href="/venues.html" class="hover:text-[#16a34a] transition">Каталог и карта</a>
+        <a href="/cabinet.html" class="hover:text-[#16a34a] transition">Кабинет</a>
+        <a href="/admin.html" class="text-[#16a34a] font-semibold">Управление</a>
       </nav>
 
       <div id="nav-auth-container"></div>
@@ -58,7 +58,7 @@
           </svg>
           Заблокировать на ремонт
         </button>
-        <button onclick="openCreateVenueModal()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold rounded-xl shadow-sm transition flex items-center gap-1.5">
+        <button onclick="openCreateVenueModal()" class="px-4 py-2 bg-[#16a34a] hover:bg-[#15803d] text-white text-xs font-semibold rounded-xl shadow-sm transition flex items-center gap-1.5">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
           </svg>
@@ -68,8 +68,8 @@
     </div>
 
     <!-- Навигационные вкладки панели -->
-    <div class="flex items-center gap-3 border-b border-slate-200 mb-6 overflow-x-auto pb-1 text-sm font-semibold">
-      <button id="admin-tab-bookings" onclick="switchAdminTab('bookings')" class="pb-3 text-purple-600 border-b-2 border-purple-600 whitespace-nowrap transition">
+    <div class="flex items-center gap-3 border-b border-[#d1fae5] mb-6 overflow-x-auto pb-1 text-sm font-semibold">
+      <button id="admin-tab-bookings" onclick="switchAdminTab('bookings')" class="pb-3 text-[#16a34a] border-b-2 border-[#16a34a] whitespace-nowrap transition">
         Все бронирования
       </button>
       <button id="admin-tab-venues" onclick="switchAdminTab('venues')" class="pb-3 text-slate-500 hover:text-slate-800 whitespace-nowrap transition">
@@ -129,6 +129,7 @@
                 <th class="p-3.5">ID</th>
                 <th class="p-3.5">Название площадки</th>
                 <th class="p-3.5">Вид спорта</th>
+                <th class="p-3.5">Берег / Район</th>
                 <th class="p-3.5">Адрес</th>
                 <th class="p-3.5">Оснащение</th>
                 <th class="p-3.5">Броней</th>
@@ -137,7 +138,7 @@
               </tr>
             </thead>
             <tbody id="admin-venues-tbody" class="divide-y divide-slate-100">
-              <tr><td colspan="8" class="p-8 text-center text-slate-400">Загрузка площадок...</td></tr>
+              <tr><td colspan="9" class="p-8 text-center text-slate-400">Загрузка площадок...</td></tr>
             </tbody>
           </table>
         </div>
@@ -208,48 +209,62 @@
       <form id="create-venue-form" class="space-y-4 text-xs">
         <div>
           <label class="block font-semibold text-slate-700 mb-1">Название спортивного объекта</label>
-          <input type="text" id="venue-new-name" required placeholder="Например: Стадион «Электрон»" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-purple-500">
+          <input type="text" id="venue-new-name" required placeholder="Например: Стадион «Электрон»" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-[#16a34a]">
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block font-semibold text-slate-700 mb-1">Вид спорта</label>
-            <select id="venue-new-sport" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-purple-500"></select>
+            <select id="venue-new-sport" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-[#16a34a]"></select>
           </div>
           <div>
             <label class="block font-semibold text-slate-700 mb-1">Размеры (длина x ширина)</label>
-            <input type="text" id="venue-new-dimensions" placeholder="40x20 м" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-purple-500">
+            <input type="text" id="venue-new-dimensions" placeholder="40x20 м" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-[#16a34a]">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Берег Оби</label>
+            <select id="venue-new-bank" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-[#16a34a]">
+              <option value="right">Правый берег</option>
+              <option value="left">Левый берег</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Район города</label>
+            <input type="text" id="venue-new-district" required placeholder="Например: Центральный" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-[#16a34a]">
           </div>
         </div>
 
         <div>
           <label class="block font-semibold text-slate-700 mb-1">Адрес местоположения в Новосибирске</label>
-          <input type="text" id="venue-new-address" required placeholder="г. Новосибирск, ул. ..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-purple-500">
+          <input type="text" id="venue-new-address" required placeholder="г. Новосибирск, ул. ..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-[#16a34a]">
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block font-semibold text-slate-700 mb-1">Широта (Latitude)</label>
-            <input type="number" step="0.000001" id="venue-new-lat" required value="55.0302" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-purple-500">
+            <input type="number" step="0.000001" id="venue-new-lat" required value="55.0302" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-[#16a34a]">
           </div>
           <div>
             <label class="block font-semibold text-slate-700 mb-1">Долгота (Longitude)</label>
-            <input type="number" step="0.000001" id="venue-new-lng" required value="82.9204" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-purple-500">
+            <input type="number" step="0.000001" id="venue-new-lng" required value="82.9204" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-[#16a34a]">
           </div>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block font-semibold text-slate-700 mb-1">Тип покрытия</label>
-            <input type="text" id="venue-new-surface" placeholder="Искусственная трава / резина" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-purple-500">
+            <input type="text" id="venue-new-surface" placeholder="Искусственная трава / резина" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-[#16a34a]">
           </div>
           <div class="flex items-center gap-4 pt-5">
             <label class="flex items-center gap-1.5 cursor-pointer">
-              <input type="checkbox" id="venue-new-lighting" class="w-4 h-4 text-purple-600 rounded">
+              <input type="checkbox" id="venue-new-lighting" class="w-4 h-4 text-[#16a34a] rounded">
               <span>Освещение</span>
             </label>
             <label class="flex items-center gap-1.5 cursor-pointer">
-              <input type="checkbox" id="venue-new-fence" class="w-4 h-4 text-purple-600 rounded">
+              <input type="checkbox" id="venue-new-fence" class="w-4 h-4 text-[#16a34a] rounded">
               <span>Ограждение</span>
             </label>
           </div>
@@ -257,19 +272,19 @@
 
         <div>
           <label class="block font-semibold text-slate-700 mb-1">URL фотографии площадки</label>
-          <input type="url" id="venue-new-photo" placeholder="https://..." value="https://images.unsplash.com/photo-1575361204480-aadea25e6e68?auto=format&fit=crop&w=1000&q=80" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-purple-500">
+          <input type="url" id="venue-new-photo" placeholder="/img/venues/football_1.svg" value="/img/venues/football_1.svg" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-[#16a34a]">
         </div>
 
         <div>
           <label class="block font-semibold text-slate-700 mb-1">Описание объекта</label>
-          <textarea id="venue-new-desc" rows="2" placeholder="Краткая информация..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-purple-500"></textarea>
+          <textarea id="venue-new-desc" rows="2" placeholder="Краткая информация..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-[#16a34a]"></textarea>
         </div>
 
         <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
           <button type="button" onclick="closeCreateVenueModal()" class="px-4 py-2 font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition">
             Отмена
           </button>
-          <button type="submit" id="create-venue-btn" class="px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-xl shadow transition">
+          <button type="submit" id="create-venue-btn" class="px-5 py-2 bg-[#16a34a] hover:bg-[#15803d] text-white font-semibold rounded-xl shadow transition">
             Создать площадку
           </button>
         </div>
@@ -307,7 +322,7 @@
 
         <div>
           <label class="block font-semibold text-slate-700 mb-1">Причина блокировки</label>
-          <input type="text" id="block-reason" required placeholder="Например: Плановый ремонт полиуретанового покрытия" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-amber-500">
+          <input type="text" id="block-reason" required placeholder="Например: Плановый ремонт покрытия" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-amber-500">
         </div>
 
         <div>

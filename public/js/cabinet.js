@@ -53,10 +53,10 @@ function switchTab(tab) {
   const tabHistory = document.getElementById('tab-history');
 
   if (tab === 'upcoming') {
-    tabUpcoming.className = 'pb-3 text-sm font-bold text-blue-600 border-b-2 border-blue-600 transition flex items-center gap-2';
+    tabUpcoming.className = 'pb-3 text-sm font-bold text-[#16a34a] border-b-2 border-[#16a34a] transition flex items-center gap-2';
     tabHistory.className = 'pb-3 text-sm font-medium text-slate-500 hover:text-slate-800 transition flex items-center gap-2';
   } else {
-    tabHistory.className = 'pb-3 text-sm font-bold text-blue-600 border-b-2 border-blue-600 transition flex items-center gap-2';
+    tabHistory.className = 'pb-3 text-sm font-bold text-[#16a34a] border-b-2 border-[#16a34a] transition flex items-center gap-2';
     tabUpcoming.className = 'pb-3 text-sm font-medium text-slate-500 hover:text-slate-800 transition flex items-center gap-2';
   }
 
@@ -132,14 +132,14 @@ function renderBookingsList() {
       <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 transition hover:border-slate-300">
         
         <div class="flex items-start gap-4">
-          <div class="w-20 h-20 rounded-xl bg-slate-100 flex-shrink-0 overflow-hidden relative">
-            <img src="${b.venue_photo_url || 'https://images.unsplash.com/photo-1575361204480-aadea25e6e68?auto=format&fit=crop&w=400&q=80'}" 
+          <div class="w-20 h-20 rounded-xl bg-[#f0fdf4] border border-[#d1fae5] flex-shrink-0 overflow-hidden relative">
+            <img src="${b.venue_photo_url || '/img/venues/football_1.svg'}" 
                  alt="${escapeHtml(b.venue_name)}" class="w-full h-full object-cover">
           </div>
 
           <div>
             <div class="flex items-center gap-2 flex-wrap mb-1">
-              <span class="px-2 py-0.5 text-[10px] font-bold bg-blue-50 text-blue-700 rounded-md">
+              <span class="px-2 py-0.5 text-[10px] font-bold bg-[#dcfce7] text-[#166534] rounded-md">
                 ${escapeHtml(b.sport_type_name)}
               </span>
               ${statusBadges[b.status] || ''}
@@ -147,19 +147,19 @@ function renderBookingsList() {
             </div>
 
             <h3 class="font-bold text-slate-900 text-base leading-snug">
-              <a href="/venue.html?id=${b.venue_id}" class="hover:text-blue-600 transition">${escapeHtml(b.venue_name)}</a>
+              <a href="/venue.html?id=${b.venue_id}" class="hover:text-[#16a34a] transition">${escapeHtml(b.venue_name)}</a>
             </h3>
 
             <p class="text-xs text-slate-500 mt-0.5">${escapeHtml(b.venue_address)}</p>
 
             <div class="mt-2 text-xs text-slate-700 flex flex-wrap items-center gap-3">
-              <span class="font-semibold text-blue-700 bg-blue-50/70 px-2.5 py-1 rounded-lg">
+              <span class="font-semibold text-[#166534] bg-[#dcfce7] px-2.5 py-1 rounded-lg">
                 🗓️ ${dateFormatted}, ${timeFormatted}
               </span>
               <span class="text-slate-500">Участников: <b class="text-slate-800">${b.participants_count}</b></span>
             </div>
 
-            <p class="text-xs text-slate-600 mt-2 bg-slate-50 p-2 rounded-lg border border-slate-100 inline-block">
+            <p class="text-xs text-slate-600 mt-2 bg-[#f0fdf4] p-2 rounded-lg border border-[#d1fae5] inline-block">
               <span class="font-medium text-slate-500">Цель:</span> ${escapeHtml(b.purpose)}
             </p>
           </div>
@@ -168,7 +168,7 @@ function renderBookingsList() {
         <!-- Кнопки управления -->
         ${isUpcoming ? `
           <div class="flex items-center gap-2 w-full md:w-auto justify-end pt-3 md:pt-0 border-t md:border-t-0 border-slate-100">
-            <button onclick="openRescheduleModal(${b.id})" class="px-3.5 py-2 text-xs font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-xl transition">
+            <button onclick="openRescheduleModal(${b.id})" class="px-3.5 py-2 text-xs font-semibold text-[#166534] bg-[#dcfce7] hover:bg-emerald-200 rounded-xl transition">
               Перенести время
             </button>
             <button onclick="handleCancelBooking(${b.id})" class="px-3.5 py-2 text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 rounded-xl transition">

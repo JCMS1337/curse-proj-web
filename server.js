@@ -1,17 +1,17 @@
 /**
- * Главный файл сервера Express курсового проекта
- * «Кроссплатформенное приложение для бронирования муниципальных спортивных площадок»
+ * Главный файл сервера Express приложения SportBook
  */
 require('dotenv').config();
 const path = require('path');
 const express = require('express');
 const cors = require('cors');
 
-// Импорт маршрутов
+// Импорт маршрутов и контроллеров
 const authRoutes = require('./src/routes/authRoutes');
 const venueRoutes = require('./src/routes/venueRoutes');
 const bookingRoutes = require('./src/routes/bookingRoutes');
 const adminRoutes = require('./src/routes/adminRoutes');
+const venueController = require('./src/controllers/venueController');
 
 // Импорт централизованного обработчика ошибок
 const { errorHandler } = require('./src/middleware/errorHandler');
@@ -32,11 +32,13 @@ app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
     timestamp: new Date().toISOString(),
-    service: 'Муниципальный сервис бронирования спортивных площадок',
+    service: 'SportBook',
   });
 });
 
 // Подключение API маршрутов
+app.get('/api/sport-types', venueController.getSportTypes);
+app.get('/sport-types', venueController.getSportTypes);
 app.use('/api/auth', authRoutes);
 app.use('/api/venues', venueRoutes);
 app.use('/api/bookings', bookingRoutes);
@@ -72,7 +74,7 @@ if (process.env.NODE_ENV !== 'test') {
     }
 
     console.log('===============================================================');
-    console.log('      СЕРВЕР БРОНИРОВАНИЯ СПОРТИВНЫХ ПЛОЩАДОК ЗАПУЩЕН         ');
+    console.log('                 СЕРВЕР SportBook ЗАПУЩЕН                      ');
     console.log('===============================================================');
     console.log(`  Локальный доступ (на этом компьютере):`);
     console.log(`  -> http://localhost:${PORT}`);

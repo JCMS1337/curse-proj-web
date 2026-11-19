@@ -30,7 +30,7 @@ async function getAdminVenues(req, res, next) {
 async function createVenue(req, res, next) {
   try {
     const {
-      name, address, latitude, longitude, sport_type_id,
+      name, address, bank, district, latitude, longitude, sport_type_id,
       dimensions, surface_type, has_lighting, has_fence,
       description, is_active, photos, equipment
     } = req.body;
@@ -39,16 +39,18 @@ async function createVenue(req, res, next) {
       throw new AppError('Заполните обязательные поля: название, адрес, координаты и вид спорта', 400);
     }
 
+    const assignedBank = (bank === 'left' || bank === 'right') ? bank : 'right';
+
     const client = await db.pool.connect();
     try {
       await client.query('BEGIN');
 
       const venueRes = await client.query(
-        `INSERT INTO venues (name, address, latitude, longitude, sport_type_id, dimensions, surface_type, has_lighting, has_fence, description, is_active)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+        `INSERT INTO venues (name, address, bank, district, latitude, longitude, sport_type_id, dimensions, surface_type, has_lighting, has_fence, description, is_active)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
          RETURNING *`,
         [
-          name, address, latitude, longitude, sport_type_id,
+          name, address, assignedBank, district || null, latitude, longitude, sport_type_id,
           dimensions || null, surface_type || null,
           !!has_lighting, !!has_fence, description || null,
           is_active !== undefined ? !!is_active : true
@@ -106,7 +108,7 @@ async function updateVenue(req, res, next) {
     if (isNaN(venueId)) throw new AppError('Некорректный ID площадки', 400);
 
     const {
-      name, address, latitude, longitude, sport_type_id,
+      name, address, bank, district, latitude, longitude, sport_type_id,
       dimensions, surface_type, has_lighting, has_fence,
       description, is_active
     } = req.body;
@@ -115,18 +117,20 @@ async function updateVenue(req, res, next) {
       `UPDATE venues
        SET name = COALESCE($1, name),
            address = COALESCE($2, address),
-           latitude = COALESCE($3, latitude),
-           longitude = COALESCE($4, longitude),
-           sport_type_id = COALESCE($5, sport_type_id),
-           dimensions = COALESCE($6, dimensions),
-           surface_type = COALESCE($7, surface_type),
-           has_lighting = COALESCE($8, has_lighting),
-           has_fence = COALESCE($9, has_fence),
-           description = COALESCE($10, description),
-           is_active = COALESCE($11, is_active)
-       WHERE id = $12
+           bank = COALESCE($3, bank),
+           district = COALESCE($4, district),
+           latitude = COALESCE($5, latitude),
+           longitude = COALESCE($6, longitude),
+           sport_type_id = COALESCE($7, sport_type_id),
+           dimensions = COALESCE($8, dimensions),
+           surface_type = COALESCE($9, surface_type),
+           has_lighting = COALESCE($10, has_lighting),
+           has_fence = COALESCE($11, has_fence),
+           description = COALESCE($12, description),
+           is_active = COALESCE($13, is_active)
+       WHERE id = $14
        RETURNING *`,
-      [name, address, latitude, longitude, sport_type_id, dimensions, surface_type, has_lighting, has_fence, description, is_active, venueId]
+      [name, address, bank, district, latitude, longitude, sport_type_id, dimensions, surface_type, has_lighting, has_fence, description, is_active, venueId]
     );
 
     if (result.rowCount === 0) {

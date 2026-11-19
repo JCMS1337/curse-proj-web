@@ -1,12 +1,13 @@
 /**
- * Скрипт автоматизированного тестирования REST API (Этап 2).
- * Проверяет все эндпоинты, авторизацию, роли и обработку конфликтов 409.
+ * Скрипт автоматизированного тестирования REST API SportBook.
+ * Проверяет эндпоинты, авторизацию, фильтрацию по берегам/районам/видам спорта,
+ * разграничение прав и аппаратную обработку конфликтов 409.
  */
 const http = require('http');
 const app = require('./server');
 
 let server;
-const PORT = 3001; // Используем тестовый порт, чтобы не конфликтовать
+const PORT = 3001; // Тестовый порт
 
 function request(options, data = null) {
   return new Promise((resolve, reject) => {
@@ -44,7 +45,7 @@ function request(options, data = null) {
 
 async function runTests() {
   console.log('==================================================');
-  console.log('        ТЕСТИРОВАНИЕ REST API СЕРВЕРА (ЭТАП 2)    ');
+  console.log('        ТЕСТИРОВАНИЕ REST API SPORTBOOK          ');
   console.log('==================================================\n');
 
   server = app.listen(PORT);
@@ -54,9 +55,23 @@ async function runTests() {
     console.log('1. Проверка эндпоинта /api/health...');
     const health = await request({ path: '/api/health', method: 'GET' });
     console.log(`   Статус: ${health.status}, Сервис: ${health.data.service}`);
+    if (health.data.service !== 'SportBook') {
+      throw new Error(`Ожидался сервис "SportBook", получено "${health.data.service}"`);
+    }
 
-    // 2. Аутентификация
-    console.log('\n2. Проверка авторизации...');
+    // 2. Справочник видов спорта
+    console.log('\n2. Проверка справочника видов спорта (/api/sport-types)...');
+    const sportTypesRes = await request({ path: '/api/sport-types', method: 'GET' });
+    const sportTypes = sportTypesRes.data.data || [];
+    console.log(`   Статус: ${sportTypesRes.status}, видов спорта: ${sportTypes.length}`);
+    const stNames = sportTypes.map(s => s.name);
+    console.log(`   Виды спорта в БД: ${stNames.join(', ')}`);
+    if (!stNames.includes('Легкая атлетика')) {
+      throw new Error('Вид спорта "Легкая атлетика" не найден в /api/sport-types');
+    }
+
+    // 3. Аутентификация
+    console.log('\n3. Проверка авторизации...');
     const invalidLogin = await request(
       { path: '/api/auth/login', method: 'POST' },
       { email: 'teacher@school22.ru', password: 'wrongpassword' }
@@ -77,8 +92,8 @@ async function runTests() {
     const adminToken = adminLogin.data.data.token;
     console.log(`   Успешный вход администратора: статус ${adminLogin.status}, роль: ${adminLogin.data.data.user.role_name}`);
 
-    // 3. Профиль пользователя (/api/auth/me)
-    console.log('\n3. Проверка получения профиля (/api/auth/me)...');
+    // 4. Профиль пользователя (/api/auth/me)
+    console.log('\n4. Проверка получения профиля (/api/auth/me)...');
     const meRes = await request({
       path: '/api/auth/me',
       method: 'GET',
@@ -86,29 +101,49 @@ async function runTests() {
     });
     console.log(`   Пользователь: ${meRes.data.data.user.full_name}, Организация: ${meRes.data.data.user.organization_name}`);
 
-    // 4. Каталог площадок
-    console.log('\n4. Проверка каталога площадок (/api/venues)...');
+    // 5. Каталог площадок и фильтры (берег, район, вид спорта, лимит)
+    console.log('\n5. Проверка каталога площадок и фильтров (/api/venues)...');
     const venuesRes = await request({ path: '/api/venues', method: 'GET' });
-    console.log(`   Получено площадок: ${venuesRes.data.count}`);
+    console.log(`   Всего площадок в каталоге: ${venuesRes.data.count}`);
 
-    const filterRes = await request({ path: '/api/venues?sport_type_id=1', method: 'GET' });
-    console.log(`   Площадок с видом спорта "Футбол": ${filterRes.data.count}`);
+    const leftBankRes = await request({ path: '/api/venues?bank=left', method: 'GET' });
+    console.log(`   Площадок на левом берегу: ${leftBankRes.data.count} (ожидаем 10)`);
+    if (leftBankRes.data.count !== 10) {
+      throw new Error(`Ожидалось 10 площадок на левом берегу, получено ${leftBankRes.data.count}`);
+    }
+
+    const rightBankRes = await request({ path: '/api/venues?bank=right', method: 'GET' });
+    console.log(`   Площадок на правом берегу: ${rightBankRes.data.count} (ожидаем 20)`);
+    if (rightBankRes.data.count !== 20) {
+      throw new Error(`Ожидалось 20 площадок на правом берегу, получено ${rightBankRes.data.count}`);
+    }
+
+    const athleticsRes = await request({ path: '/api/venues?sport_type_id=5', method: 'GET' });
+    console.log(`   Площадок с видом "Легкая атлетика": ${athleticsRes.data.count} (ожидаем 6)`);
+
+    const limit3Res = await request({ path: '/api/venues?sport_type_id=1&limit=3', method: 'GET' });
+    console.log(`   Запрос с limit=3: возвращено карточек ${limit3Res.data.data.length} (ожидаем 3)`);
+    if (limit3Res.data.data.length !== 3) {
+      throw new Error(`Ожидалось 3 карточки при limit=3, получено ${limit3Res.data.data.length}`);
+    }
+
+    const districtRes = await request({ path: `/api/venues?district=${encodeURIComponent('Центральный')}`, method: 'GET' });
+    console.log(`   Площадок в Центральном районе: ${districtRes.data.count}`);
 
     const venueDetail = await request({ path: '/api/venues/1', method: 'GET' });
-    console.log(`   Детали площадки 1: "${venueDetail.data.data.name}", фото: ${venueDetail.data.data.photos.length}, инвентарь: ${venueDetail.data.data.equipment.length}`);
+    console.log(`   Детали площадки 1: "${venueDetail.data.data.name}", берег: ${venueDetail.data.data.bank}, район: ${venueDetail.data.data.district}`);
 
-    // 5. Проверка доступности (/api/venues/:id/availability)
-    console.log('\n5. Проверка доступности площадки (/api/venues/1/availability)...');
+    // 6. Проверка доступности (/api/venues/:id/availability)
+    console.log('\n6. Проверка доступности площадки (/api/venues/1/availability)...');
     const availRes = await request({ path: '/api/venues/1/availability', method: 'GET' });
     console.log(`   Найдено бронирований в периоде: ${availRes.data.data.bookings.length}`);
 
-    // 6. Бронирование и тест конфликта времени (409 Conflict)
-    console.log('\n6. Проверка создания бронирования и обработки конфликта (409)...');
-    // Задаем уникальный слот в будущем (через 10 дней)
+    // 7. Бронирование и тест конфликта времени (409 Conflict)
+    console.log('\n7. Проверка создания бронирования и обработки конфликта (409)...');
     const futureDate = new Date();
-    futureDate.setDate(futureDate.getDate() + 10);
-    const startAt = new Date(futureDate.setHours(14, 0, 0, 0)).toISOString();
-    const endAt = new Date(futureDate.setHours(16, 0, 0, 0)).toISOString();
+    futureDate.setDate(futureDate.getDate() + 15);
+    const startAt = new Date(futureDate.setHours(10, 0, 0, 0)).toISOString();
+    const endAt = new Date(futureDate.setHours(12, 0, 0, 0)).toISOString();
 
     const newBooking = await request(
       {
@@ -121,7 +156,7 @@ async function runTests() {
         start_at: startAt,
         end_at: endAt,
         purpose: 'Тестовый урок физкультуры по футболу',
-        participants_count: 20,
+        participants_count: 22,
       }
     );
     console.log(`   Создание брони: статус ${newBooking.status}, ID брони: ${newBooking.data.data.id}`);
@@ -138,13 +173,16 @@ async function runTests() {
         start_at: startAt,
         end_at: endAt,
         purpose: 'Повторное пересекающееся бронирование',
-        participants_count: 15,
+        participants_count: 18,
       }
     );
     console.log(`   Попытка двойного бронирования: статус ${conflictBooking.status} (ожидаем 409: "${conflictBooking.data.error}")`);
+    if (conflictBooking.status !== 409) {
+      throw new Error(`Ожидался статус 409, получено ${conflictBooking.status}`);
+    }
 
-    // 7. Отмена созданной тестовой брони
-    console.log('\n7. Отмена бронирования (DELETE /api/bookings/:id)...');
+    // 8. Отмена созданной тестовой брони
+    console.log('\n8. Отмена бронирования (DELETE /api/bookings/:id)...');
     const cancelRes = await request({
       path: `/api/bookings/${newBooking.data.data.id}`,
       method: 'DELETE',
@@ -152,8 +190,8 @@ async function runTests() {
     });
     console.log(`   Отмена брони: статус ${cancelRes.status}, новый статус: ${cancelRes.data.data.status}`);
 
-    // 8. Проверка ролевой модели (RBAC)
-    console.log('\n8. Проверка разграничения прав доступа (RBAC)...');
+    // 9. Проверка ролевой модели (RBAC)
+    console.log('\n9. Проверка разграничения прав доступа (RBAC)...');
     const forbiddenRes = await request({
       path: '/api/admin/users',
       method: 'GET',
@@ -169,7 +207,7 @@ async function runTests() {
     console.log(`   Доступ администратора к /api/admin/users: статус ${adminUsersRes.status}, пользователей в системе: ${adminUsersRes.data.data.length}`);
 
     console.log('\n==================================================');
-    console.log('   ВСЕ ТЕСТЫ ЭТАПА 2 УСПЕШНО ПРОЙДЕНЫ!');
+    console.log('   ВСЕ ТЕСТЫ REST API УСПЕШНО ПРОЙДЕНЫ!');
     console.log('==================================================');
   } catch (err) {
     console.error('Ошибка при тестировании API:', err);

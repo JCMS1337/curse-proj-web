@@ -120,7 +120,7 @@ function showError(title, text = '') {
     title,
     text,
     confirmButtonText: 'Понятно',
-    confirmButtonColor: '#2563eb',
+    confirmButtonColor: '#16a34a',
     customClass: { popup: 'rounded-2xl shadow-xl' }
   });
 }
@@ -131,7 +131,7 @@ function showConfirm(title, text = '', confirmText = 'Подтвердить') {
     title,
     text,
     showCancelButton: true,
-    confirmButtonColor: '#2563eb',
+    confirmButtonColor: '#16a34a',
     cancelButtonColor: '#94a3b8',
     confirmButtonText: confirmText,
     cancelButtonText: 'Отмена',
@@ -165,10 +165,10 @@ function updateNavigation() {
   if (navAuthContainer) {
     if (user) {
       const roleBadges = {
-        teacher: 'bg-emerald-100 text-emerald-800',
-        school_admin: 'bg-blue-100 text-blue-800',
+        teacher: 'bg-[#dcfce7] text-[#166534]',
+        school_admin: 'bg-emerald-100 text-emerald-800',
         venue_manager: 'bg-amber-100 text-amber-800',
-        admin: 'bg-purple-100 text-purple-800',
+        admin: 'bg-[#166534] text-white',
       };
       const roleTitles = {
         teacher: 'Учитель',
@@ -204,8 +204,8 @@ function updateNavigation() {
     } else {
       navAuthContainer.innerHTML = `
         <div class="flex items-center gap-2">
-          <a href="/login.html" class="px-4 py-2 text-sm font-medium text-slate-700 hover:text-blue-600 transition">Вход</a>
-          <a href="/login.html?tab=register" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm transition">Регистрация</a>
+          <a href="/login.html" class="px-4 py-2 text-sm font-medium text-slate-700 hover:text-[#16a34a] transition">Вход</a>
+          <a href="/login.html?tab=register" class="px-4 py-2 text-sm font-medium text-white bg-[#16a34a] hover:bg-[#15803d] rounded-lg shadow-sm transition">Регистрация</a>
         </div>
       `;
     }

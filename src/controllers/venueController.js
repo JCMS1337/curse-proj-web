@@ -8,11 +8,22 @@ const { AppError } = require('../middleware/errorHandler');
 // Получение списка спортивных площадок с фильтрацией и поиском
 async function getVenues(req, res, next) {
   try {
-    const { sport_type_id, has_lighting, has_fence, search, is_active } = req.query;
+    const { 
+      sport_type, 
+      sport_type_id, 
+      bank, 
+      district, 
+      has_lighting, 
+      has_fence, 
+      search, 
+      is_active,
+      limit,
+      offset 
+    } = req.query;
 
     let queryText = `
-      SELECT v.id, v.name, v.address, v.latitude, v.longitude, 
-             v.sport_type_id, st.name AS sport_type_name,
+      SELECT v.id, v.name, v.address, v.bank, v.district, v.latitude, v.longitude, 
+             v.sport_type_id, st.name AS sport_type, st.name AS sport_type_name,
              v.dimensions, v.surface_type, v.has_lighting, v.has_fence, 
              v.description, v.is_active, v.created_at,
              (
@@ -38,17 +49,37 @@ async function getVenues(req, res, next) {
     const queryParams = [];
 
     // Фильтр активности площадки (по умолчанию только активные)
-    if (is_active !== undefined) {
+    if (is_active !== undefined && is_active !== 'all') {
       queryParams.push(is_active === 'true' || is_active === true);
       queryText += ` AND v.is_active = $${queryParams.length}`;
-    } else {
+    } else if (is_active !== 'all') {
       queryText += ` AND v.is_active = TRUE`;
     }
 
-    // Фильтр по виду спорта
+    // Фильтр по виду спорта (по ID или названию)
     if (sport_type_id) {
       queryParams.push(parseInt(sport_type_id, 10));
       queryText += ` AND v.sport_type_id = $${queryParams.length}`;
+    } else if (sport_type) {
+      if (!isNaN(parseInt(sport_type, 10))) {
+        queryParams.push(parseInt(sport_type, 10));
+        queryText += ` AND v.sport_type_id = $${queryParams.length}`;
+      } else {
+        queryParams.push(sport_type.trim());
+        queryText += ` AND st.name ILIKE $${queryParams.length}`;
+      }
+    }
+
+    // Фильтр по берегу (left / right)
+    if (bank && bank.trim() !== '') {
+      queryParams.push(bank.trim().toLowerCase());
+      queryText += ` AND LOWER(v.bank) = $${queryParams.length}`;
+    }
+
+    // Фильтр по району
+    if (district && district.trim() !== '') {
+      queryParams.push(`%${district.trim()}%`);
+      queryText += ` AND v.district ILIKE $${queryParams.length}`;
     }
 
     // Фильтр по наличию освещения
@@ -66,10 +97,21 @@ async function getVenues(req, res, next) {
     // Поисковая строка по названию или адресу (регистронезависимо)
     if (search && search.trim() !== '') {
       queryParams.push(`%${search.trim()}%`);
-      queryText += ` AND (v.name ILIKE $${queryParams.length} OR v.address ILIKE $${queryParams.length} OR v.description ILIKE $${queryParams.length})`;
+      queryText += ` AND (v.name ILIKE $${queryParams.length} OR v.address ILIKE $${queryParams.length} OR v.district ILIKE $${queryParams.length} OR v.description ILIKE $${queryParams.length})`;
     }
 
     queryText += ` ORDER BY v.id ASC`;
+
+    // Пагинация (limit / offset)
+    if (limit && !isNaN(parseInt(limit, 10))) {
+      queryParams.push(parseInt(limit, 10));
+      queryText += ` LIMIT $${queryParams.length}`;
+    }
+
+    if (offset && !isNaN(parseInt(offset, 10))) {
+      queryParams.push(parseInt(offset, 10));
+      queryText += ` OFFSET $${queryParams.length}`;
+    }
 
     const result = await db.query(queryText, queryParams);
 
@@ -92,8 +134,8 @@ async function getVenueById(req, res, next) {
     }
 
     const venueRes = await db.query(
-      `SELECT v.id, v.name, v.address, v.latitude, v.longitude, 
-              v.sport_type_id, st.name AS sport_type_name, st.description AS sport_type_description,
+      `SELECT v.id, v.name, v.address, v.bank, v.district, v.latitude, v.longitude, 
+              v.sport_type_id, st.name AS sport_type, st.name AS sport_type_name, st.description AS sport_type_description,
               v.dimensions, v.surface_type, v.has_lighting, v.has_fence, 
               v.description, v.is_active, v.created_at
        FROM venues v
@@ -197,8 +239,47 @@ async function getVenueAvailability(req, res, next) {
   }
 }
 
+// Получение списка всех видов спорта
+async function getSportTypes(req, res, next) {
+  try {
+    const result = await db.query('SELECT id, name, description FROM sport_types ORDER BY id ASC');
+    res.json({
+      success: true,
+      data: result.rows,
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
+// Получение списка районов и берегов Новосибирска
+async function getDistricts(req, res, next) {
+  try {
+    const districts = [
+      { name: 'Центральный', bank: 'right' },
+      { name: 'Железнодорожный', bank: 'right' },
+      { name: 'Заельцовский', bank: 'right' },
+      { name: 'Калининский', bank: 'right' },
+      { name: 'Дзержинский', bank: 'right' },
+      { name: 'Ленинский', bank: 'left' },
+      { name: 'Кировский', bank: 'left' },
+      { name: 'Советский', bank: 'left' },
+      { name: 'Октябрьский', bank: 'left' },
+      { name: 'Первомайский', bank: 'left' },
+    ];
+    res.json({
+      success: true,
+      data: districts,
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
 module.exports = {
   getVenues,
   getVenueById,
   getVenueAvailability,
+  getSportTypes,
+  getDistricts,
 };

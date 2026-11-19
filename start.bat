@@ -1,9 +1,9 @@
 @echo off
 cd /d "%~dp0"
-title Sport Booking App (http://localhost:3000)
+title SportBook (http://localhost:3000)
 
 echo ===================================================
-echo   Starting local server: http://localhost:3000
+echo   Starting SportBook server: http://localhost:3000
 echo ===================================================
 echo.
 

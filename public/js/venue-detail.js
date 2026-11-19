@@ -63,7 +63,7 @@ async function loadVenueDetails() {
     document.getElementById('breadcrumb-venue-name').textContent = currentVenue.name;
     document.getElementById('venue-title').textContent = currentVenue.name;
     document.getElementById('venue-address').innerHTML = `
-      <svg class="w-4 h-4 text-blue-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg class="w-4 h-4 text-[#16a34a] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
       </svg>
@@ -81,14 +81,14 @@ async function loadVenueDetails() {
     // Галерея фото
     const photos = currentVenue.photos && currentVenue.photos.length > 0
       ? currentVenue.photos
-      : [{ photo_url: 'https://images.unsplash.com/photo-1575361204480-aadea25e6e68?auto=format&fit=crop&w=1000&q=80' }];
+      : [{ photo_url: '/img/venues/football_1.svg' }];
 
     const mainPhoto = document.getElementById('main-photo');
     mainPhoto.src = photos[0].photo_url;
 
     const thumbContainer = document.getElementById('thumbnails-container');
     thumbContainer.innerHTML = photos.map((p, idx) => `
-      <button type="button" class="w-20 h-14 rounded-lg overflow-hidden border-2 flex-shrink-0 transition ${idx === 0 ? 'border-blue-600 ring-2 ring-blue-100' : 'border-transparent hover:border-slate-300'}"
+      <button type="button" class="w-20 h-14 rounded-lg overflow-hidden border-2 flex-shrink-0 transition ${idx === 0 ? 'border-[#16a34a] ring-2 ring-[#d1fae5]' : 'border-transparent hover:border-slate-300'}"
               onclick="selectPhoto('${p.photo_url}', this)">
         <img src="${p.photo_url}" class="w-full h-full object-cover">
       </button>
@@ -120,9 +120,9 @@ async function loadVenueDetails() {
 function selectPhoto(url, btn) {
   document.getElementById('main-photo').src = url;
   document.querySelectorAll('#thumbnails-container button').forEach(b => {
-    b.classList.remove('border-blue-600', 'ring-2', 'ring-blue-100');
+    b.classList.remove('border-[#16a34a]', 'ring-2', 'ring-[#d1fae5]');
   });
-  btn.classList.add('border-blue-600', 'ring-2', 'ring-blue-100');
+  btn.classList.add('border-[#16a34a]', 'ring-2', 'ring-[#d1fae5]');
 }
 
 // Загрузка доступности на выбранную дату
@@ -190,10 +190,10 @@ function renderSlotsGrid() {
     const slotEl = document.createElement('div');
     slotEl.className = `time-slot p-2.5 rounded-xl border text-center transition flex flex-col justify-between min-h-[70px] ${
       status === 'available'
-        ? 'available bg-emerald-50/70 border-emerald-200 text-emerald-800 hover:bg-emerald-100 hover:border-emerald-300 cursor-pointer'
+        ? 'available bg-[#dcfce7] border-[#86efac] text-[#166534] hover:bg-emerald-200 cursor-pointer'
         : status === 'blocked'
-        ? 'bg-amber-50 border-amber-200 text-amber-800 cursor-not-allowed opacity-90'
-        : 'bg-red-50 border-red-200 text-red-800 cursor-not-allowed opacity-90'
+        ? 'bg-[#fef3c7] border-amber-300 text-[#b45309] cursor-not-allowed opacity-90'
+        : 'bg-[#fecaca] border-red-300 text-[#991b1b] cursor-not-allowed opacity-90'
     }`;
 
     slotEl.title = info || `${startHourStr} - ${endHourStr}: Свободно для бронирования`;
@@ -201,7 +201,7 @@ function renderSlotsGrid() {
     slotEl.innerHTML = `
       <span class="text-xs font-bold">${startHourStr} - ${endHourStr}</span>
       <span class="text-[10px] font-semibold mt-1 px-1.5 py-0.5 rounded ${
-        status === 'available' ? 'bg-emerald-200/60' : status === 'blocked' ? 'bg-amber-200/60' : 'bg-red-200/60'
+        status === 'available' ? 'bg-[#bbf7d0] text-[#166534]' : status === 'blocked' ? 'bg-amber-200 text-[#b45309]' : 'bg-red-200 text-[#991b1b]'
       }">
         ${label}
       </span>
@@ -240,7 +240,7 @@ async function handleBookingSubmit(e) {
       showCancelButton: true,
       confirmButtonText: 'Войти в систему',
       cancelButtonText: 'Отмена',
-      confirmButtonColor: '#2563eb',
+      confirmButtonColor: '#16a34a',
     }).then((res) => {
       if (res.isConfirmed) {
         window.location.href = `/login.html?redirect=${encodeURIComponent(window.location.pathname + window.location.search)}`;
@@ -294,7 +294,7 @@ async function handleBookingSubmit(e) {
       confirmButtonText: 'Перейти в личный кабинет',
       showCancelButton: true,
       cancelButtonText: 'Остаться здесь',
-      confirmButtonColor: '#2563eb',
+      confirmButtonColor: '#16a34a',
       cancelButtonColor: '#94a3b8',
     }).then((action) => {
       if (action.isConfirmed) {

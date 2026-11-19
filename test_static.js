@@ -1,5 +1,5 @@
 /**
- * Скрипт проверки раздачи клиентских страниц и статических ресурсов Express сервером (Этап 3).
+ * Скрипт проверки раздачи клиентских страниц и статических ресурсов Express сервером.
  */
 const http = require('http');
 const app = require('./server');
@@ -17,11 +17,18 @@ const urls = [
   '/admin.html',
   '/css/styles.css',
   '/js/api.js',
+  '/js/home.js',
   '/js/venues.js',
   '/js/venue-detail.js',
   '/js/auth.js',
   '/js/cabinet.js',
   '/js/admin.js',
+  '/img/hero-banner.svg',
+  '/img/venues/football_1.svg',
+  '/img/venues/basketball_1.svg',
+  '/img/venues/volleyball_1.svg',
+  '/img/venues/universal_1.svg',
+  '/img/venues/athletics_1.svg',
 ];
 
 async function checkUrl(url) {
@@ -43,14 +50,14 @@ async function checkUrl(url) {
 
 async function run() {
   console.log('==================================================');
-  console.log('    ПРОВЕРКА РАЗДАЧИ СТРАНИЦ И СТАТИКИ (ЭТАП 3)   ');
+  console.log('    ПРОВЕРКА РАЗДАЧИ СТРАНИЦ И СТАТИКИ SPORTBOOK  ');
   console.log('==================================================\n');
 
   try {
     for (const url of urls) {
       const res = await checkUrl(url);
       const isOk = res.status === 200;
-      console.log(`  [${isOk ? 'OK 200' : 'FAIL ' + res.status}] ${url.padEnd(25)} (${res.size} байт, ${res.contentType})`);
+      console.log(`  [${isOk ? 'OK 200' : 'FAIL ' + res.status}] ${url.padEnd(30)} (${res.size} байт, ${res.contentType})`);
       if (!isOk) {
         throw new Error(`Страница ${url} вернула статус ${res.status}`);
       }

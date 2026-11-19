@@ -1,12 +1,34 @@
 /**
- * Дополнительные стили интерфейса приложения.
- * Дополняют Tailwind CSS: кастомные скроллбары, стили карты Leaflet и плавные переходы.
+ * Стили интерфейса приложения SportBook.
+ * Зелёная цветовая палитра:
+ * - Основной: #16a34a (green-600)
+ * - Тёмный акцент: #166534 (green-800)
+ * - Светлый фон: #f0fdf4 (green-50)
+ * - Текст: #1f2937 (gray-800)
+ * - Рамки: #d1fae5 (green-100)
  */
+
+:root {
+  --primary: #16a34a;
+  --primary-hover: #15803d;
+  --dark: #166534;
+  --bg: #f0fdf4;
+  --text: #1f2937;
+  --border: #d1fae5;
+  --slot-avail-bg: #dcfce7;
+  --slot-avail-border: #86efac;
+  --slot-avail-text: #166534;
+  --slot-booked-bg: #fecaca;
+  --slot-booked-text: #991b1b;
+  --slot-blocked-bg: #fef3c7;
+  --slot-blocked-text: #b45309;
+}
 
 /* Плавный скролл */
 html {
   scroll-behavior: smooth;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  color: var(--text);
 }
 
 /* Кастомный тонкий скроллбар */
@@ -55,7 +77,11 @@ html {
 }
 
 .time-slot.selected {
-  background-color: #2563eb !important;
+  background-color: var(--primary) !important;
   color: #ffffff !important;
-  border-color: #1d4ed8 !important;
+  border-color: var(--dark) !important;
+}
+
+.time-slot.selected span {
+  color: #ffffff !important;
 }
