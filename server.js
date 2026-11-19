@@ -59,7 +59,7 @@ app.use(errorHandler);
 const HOST = process.env.HOST || '0.0.0.0';
 
 if (process.env.NODE_ENV !== 'test') {
-  app.listen(PORT, HOST, () => {
+  const server = app.listen(PORT, HOST, () => {
     const os = require('os');
     const networkInterfaces = os.networkInterfaces();
     const networkIps = [];
@@ -90,6 +90,20 @@ if (process.env.NODE_ENV !== 'test') {
     console.log('===============================================================');
     console.log('  Для остановки сервера нажмите Ctrl + C');
     console.log('===============================================================');
+  });
+
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.error('\n===============================================================');
+      console.error(` [ОШИБКА] Порт ${PORT} уже занят другим процессом!`);
+      console.error(` Скорее всего, сервер уже запущен в фоновом режиме или в другом окне.`);
+      console.error(` Закройте предыдущее окно терминала или завершите процесс node.`);
+      console.error('===============================================================\n');
+      process.exit(1);
+    } else {
+      console.error('Критическая ошибка запуска сервера:', err.message);
+      process.exit(1);
+    }
   });
 }
 
