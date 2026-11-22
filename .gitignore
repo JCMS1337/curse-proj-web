@@ -1,4 +1,15 @@
 node_modules/
 .env
-.DS_Store
+.env.*.local
+.env.local
+logs/
 *.log
+db/backup/
+tmp/
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+.gemini/
+.antigravity/
+.DS_Store
